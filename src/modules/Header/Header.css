@@ -1,0 +1,54 @@
+.header {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    align-items: center;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.navBar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 60px;
+    font-size: x-large;
+    align-items: center;
+}
+
+.logo {
+    text-align: left;
+}
+
+.header img {
+    width: 40px;
+    height: auto;
+}
+
+.itemsCount {
+    vertical-align: top;
+}
+
+.shoppingCart {
+    position: relative;
+    display: inline-block;
+}
+
+.itemsCount {
+    position: absolute;
+    bottom: 15px;
+    right: 1px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+  
+  a:active {
+    color: grey;
+  }

@@ -1,0 +1,15 @@
+.mainLoginSection {
+    display: flex;
+    justify-content: center;
+    flex:auto;
+  }
+
+  .loginForm button {
+    margin-top: 30px;
+    border: 1px black solid;
+  }
+
+  .error-message {
+    color: red;
+    margin-bottom: 10px;
+}

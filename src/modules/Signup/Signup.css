@@ -1,0 +1,9 @@
+.mainSignupSection {
+    display: flex;
+    justify-content: center;
+    flex:auto;
+  }
+
+.mainSignupSection button {
+  margin-top: 30px;
+}
