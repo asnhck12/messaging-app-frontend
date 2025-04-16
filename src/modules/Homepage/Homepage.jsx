@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import './Homepage.css';
+import { fetchWithAuth } from "../../utils/api";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function HomePage() {
@@ -11,7 +12,7 @@ function HomePage() {
     }, []);
             const fetchMessages = async () => {
             try {
-                const response = await fetch(`${API_URL}/messages`);
+                const response = await fetchWithAuth(`${API_URL}/messages`);
                 const responseData = await response.json();
                 setMessages(responseData);
             } catch (error) {
@@ -23,11 +24,11 @@ function HomePage() {
         e.preventDefault();
 
         const newMessagePayload = {
-            message: newMessage
+            content: newMessage
         };
 
         try {
-            const response = await fetch(`${API_URL}/messages/newmessage`, {
+            const response = await fetchWithAuth(`${API_URL}/messages/newmessage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
