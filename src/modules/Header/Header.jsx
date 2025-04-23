@@ -67,7 +67,6 @@ function Header ({setLoggedIn}) {
         </div>
     </div>
 </>
-
     )
 }
 

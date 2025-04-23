@@ -1,12 +1,13 @@
 import { useState } from "react";
 import './Login.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 const API_URL = import.meta.env.VITE_API_URL;
 
 function LoginPage () {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState(""); 
+    const { setCurrentUser } = useOutletContext();
 
     const navigate = useNavigate();
 
@@ -30,10 +31,13 @@ function LoginPage () {
             if (!response.ok) {
                 const result = await response.json();
                 setErrorMessage(result.message || 'Failed to log in');
+                setCurrentUser("");
                 throw new Error('Failed to submit login');
             }
 
             const result = await response.json();
+            setCurrentUser(result.userId);
+            console.log("Full result: ", result);
 
             localStorage.setItem('token', result.token);
 
