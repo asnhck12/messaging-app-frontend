@@ -14,6 +14,7 @@ function UsersList({setSelectedUser}) {
                     const response = await fetchWithAuth(`${API_URL}/users`);
                     const responseData = await response.json();
                     setUsers(responseData);
+                    console.log("userId", responseData)
                 } catch (error) {
                     console.log("Error fetching messages", error);
                 }

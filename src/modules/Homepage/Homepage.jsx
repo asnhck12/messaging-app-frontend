@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import './Homepage.css';
 import { fetchWithAuth } from "../../utils/api";
 import UsersList from "./UsersList";
-import { useOutletContext } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function HomePage() {
@@ -10,7 +9,6 @@ function HomePage() {
     const [newMessage, setNewMessage] = useState("");
     const [selectedUser, setSelectedUser] = useState("");
     const [conversationId, setConversationId] = useState("");
-    const { currentUser } = useOutletContext();
 
     useEffect(() => {
         if(selectedUser) {
@@ -23,7 +21,7 @@ function HomePage() {
             const response = await fetchWithAuth(`${API_URL}/conversations/findOrCreate`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userId1: currentUser, userId2: selectedUser })
+                body: JSON.stringify({ selectedUser: selectedUser })
             });
             const data = await response.json();
             setConversationId(data.conversation.id);
@@ -51,7 +49,6 @@ function HomePage() {
 
         const newMessagePayload = {
             content: newMessage,
-            senderId: currentUser,
             conversationId: conversationId
         };
 

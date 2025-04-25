@@ -9,7 +9,6 @@ import { useEffect } from 'react'
 function App() {
 
   const [loggedIn, setLoggedIn] = useState(isAuthenticated());
-  const [currentUser, setCurrentUser] = useState("");
 
   useEffect(() => {
     const authenticateUsers = async () => {
@@ -32,7 +31,7 @@ function App() {
     <>
     <div className='fullDisplay'>
       <Header setLoggedIn={setLoggedIn}/>
-      <Outlet context={{loggedInStatus: loggedIn, setLoggedInStatus: setLoggedIn, currentUser: currentUser, setCurrentUser: setCurrentUser}}/>
+      <Outlet context={{loggedInStatus: loggedIn, setLoggedInStatus: setLoggedIn}}/>
       <Footer/>
       </div>
     </>
