@@ -24,7 +24,7 @@ function Header ({setLoggedIn}) {
     
             if (response.ok) {
                 localStorage.removeItem("token");
-                navigate('/');
+                navigate('/login');
                 setLoggedIn(false);
                 
             } else {
@@ -45,9 +45,6 @@ function Header ({setLoggedIn}) {
         <h1><Link to='/'>Messijme</Link></h1>                   
             </div>
         <div className="navBar">
-        <div className="homeButton">
-                <Link to='/'>Home</Link>
-            </div>
             {isLoggedIn ? (
                 <>
                     <div className="logoutButton">
@@ -56,9 +53,6 @@ function Header ({setLoggedIn}) {
                 </>
             ) : (
                 <>
-                    <div className="loginButton">
-                        <Link to='login'>Login</Link>
-                    </div>
                     <div className="signupButton">
                         <Link to='signup'>Signup</Link>
                     </div>

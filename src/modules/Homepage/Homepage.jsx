@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import './Homepage.css';
 import { fetchWithAuth } from "../../utils/api";
 import UsersList from "./UsersList";
+import { isAuthenticated } from "../../auth/auth";
+import { Navigate } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function HomePage() {
@@ -30,7 +32,6 @@ function HomePage() {
         } catch (error) {
             console.error("Error fetching/creating conversation:", error);
         }
-        
     }
     
     const fetchMessages = async (convId) => {
@@ -44,7 +45,6 @@ function HomePage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!conversationId) return;
 
         const newMessagePayload = {
@@ -77,39 +77,47 @@ function HomePage() {
         }
     };
 
+    const isLoggedIn = isAuthenticated();
+
     return (
         <>
         <div className="mainSection">
-            <div className="usersList">
-                <div className="usersList">
-                    <UsersList setSelectedUser={setSelectedUser}/>
-                </div>
-            </div>
-            <div className="messageView">
-            {selectedUser ? ( 
+            {isLoggedIn ? (
                 <>
-                <div className="messageTitle">
-                    <h1>Chat</h1>
+                <div className="usersList">
+                    <div className="usersList">
+                        <UsersList setSelectedUser={setSelectedUser}/>
+                    </div>
                 </div>
-                <div className="chatView">
-                    {messages.map((message) => (
-                        <div key={message.id} className="messageSection">
-                            <p>{message.content}</p>
+                <div className="messageView">
+                    {selectedUser ? ( 
+                        <>
+                        <div className="messageTitle">
+                            <h1>Chat</h1>
                         </div>
-                    ))}
-                    <div>
+                        <div className="chatView">
+                            {messages.map((message) => (
+                                <div key={message.id} className="messageSection">
+                                    <p>{message.content}</p>
+                                </div>
+                            ))}
+                        <div>
                         <form onSubmit={handleSubmit}>
                             <label htmlFor="newMessage">New Message</label>
                             <input type="text" name="newMessage" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} required/>
                             <button type="submit">Submit</button>            
                         </form>
                     </div>
-                </div> 
+                </div>
                 </>
-                ) :
-                (<p> No users selected </p>)}
-            </div>
+                ) : (
+                <p> No users selected </p>)}
+            </div> 
+            </> ) : (
+                <Navigate to="/login" replace />
+            )}
         </div>
         </>
         )}
+
 export default HomePage;
