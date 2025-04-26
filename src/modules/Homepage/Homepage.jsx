@@ -23,12 +23,11 @@ function HomePage() {
             const response = await fetchWithAuth(`${API_URL}/conversations/findOrCreate`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ selectedUser: selectedUser })
+                body: JSON.stringify({ selectedUser: selectedUser.id })
             });
             const data = await response.json();
             setConversationId(data.conversation.id);
             fetchMessages(data.conversation.id);
-            console.log("data for conversation: ", data, "ID: ", data.conversation.id);
         } catch (error) {
             console.error("Error fetching/creating conversation:", error);
         }
@@ -93,17 +92,17 @@ function HomePage() {
                     {selectedUser ? ( 
                         <>
                         <div className="messageTitle">
-                            <h1>Chat</h1>
+                            <h2>{selectedUser.username}</h2>
                         </div>
                         <div className="chatView">
                             {messages.map((message) => (
                                 <div key={message.id} className="messageSection">
-                                    <p>{message.content}</p>
+                                    <p>{message.sender.username}: {message.content}</p>
                                 </div>
                             ))}
                         <div>
                         <form onSubmit={handleSubmit}>
-                            <label htmlFor="newMessage">New Message</label>
+                            {/* <label htmlFor="newMessage">New Message</label> */}
                             <input type="text" name="newMessage" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} required/>
                             <button type="submit">Submit</button>            
                         </form>
