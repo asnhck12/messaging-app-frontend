@@ -32,11 +32,11 @@ function SignupPage () {
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error("Signup error from server:", errorData);
-                throw new Error('Failed to submit post');
+                throw new Error('Failed to submit Signup form');
             }
 
             const result = await response.json();
-            console.log('Post submitted successfully:', result);
+            console.log('Sign up submitted successfully:', result);
 
             // Clear form fields
             setUsername('');
@@ -45,7 +45,7 @@ function SignupPage () {
 
             navigate('/login');
         } catch (error) {
-            console.error('Error submitting post:', error);
+            console.error('Error submitting signup:', error);
         }
     };
         

@@ -16,3 +16,30 @@
     flex-flow: column;
     align-items: center;
 }
+
+.messageTitle, .chatView {
+    width: 100%;
+}
+
+.messageTitle {
+    text-align: start;
+}
+
+.recipient {
+    text-align: start;
+}
+
+.sender {
+    text-align: end;
+}
+
+.chatView form {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.chatView form input {
+    width: 100%;
+    height: 50px;
+}

@@ -3,7 +3,7 @@ import './Homepage.css';
 import { fetchWithAuth } from "../../utils/api";
 import UsersList from "./UsersList";
 import { isAuthenticated } from "../../auth/auth";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function HomePage() {
@@ -72,7 +72,7 @@ function HomePage() {
             setNewMessage('');
             fetchMessages(conversationId);
         } catch (error) {
-            console.error('Error submitting post:', error);
+            console.error('Error submitting message:', error);
         }
     };
 
@@ -92,17 +92,16 @@ function HomePage() {
                     {selectedUser ? ( 
                         <>
                         <div className="messageTitle">
-                            <h2>{selectedUser.username}</h2>
+                        <Link to={`/profile/${selectedUser.id}`}><h2>{selectedUser.username} {selectedUser.id}</h2></Link> 
                         </div>
                         <div className="chatView">
                             {messages.map((message) => (
-                                <div key={message.id} className="messageSection">
+                                <div key={message.id} className={"messageSection " + (message.sender.username === selectedUser.username ? 'recipient' : 'sender')}>
                                     <p>{message.sender.username}: {message.content}</p>
                                 </div>
                             ))}
                         <div>
                         <form onSubmit={handleSubmit}>
-                            {/* <label htmlFor="newMessage">New Message</label> */}
                             <input type="text" name="newMessage" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} required/>
                             <button type="submit">Submit</button>            
                         </form>

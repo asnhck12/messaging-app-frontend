@@ -47,6 +47,9 @@ function Header ({setLoggedIn}) {
         <div className="navBar">
             {isLoggedIn ? (
                 <>
+                <div className='updateProfile'>
+                    <Link to='update'>My Profile</Link>
+                </div>
                     <div className="logoutButton">
                         <a href="#" onClick={handleLogout}>Logout</a>
                     </div>
