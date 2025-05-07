@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchWithAuth } from "../../utils/api";
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -6,6 +6,23 @@ function UpdateProfile() {
     const [firstName, setFirstName] = useState("");
     const [surName, setSurName] = useState("");
     const [summary, setSummary] = useState("");
+
+    useEffect(() => {
+        const fetchMyProfile = async () => {
+            try {
+                const response = await fetchWithAuth(`${API_URL}/profile/myProfile`);
+                const data = await response.json();
+
+                setFirstName(data.firstName || "");
+                setSurName(data.surName || "");
+                setSummary(data.profileSummary || "");
+            } catch (error) {
+                console.error("Failed to fetch profile data:", error);
+            }
+        };
+
+        fetchMyProfile();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

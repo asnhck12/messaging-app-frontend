@@ -4,6 +4,7 @@ import { fetchWithAuth } from "../../utils/api";
 import UsersList from "./UsersList";
 import { isAuthenticated } from "../../auth/auth";
 import { Link, Navigate } from "react-router-dom";
+import socket from "../../utils/socket";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function HomePage() {
@@ -12,11 +13,14 @@ function HomePage() {
     const [selectedUser, setSelectedUser] = useState("");
     const [conversationId, setConversationId] = useState("");
 
+    const isLoggedIn = isAuthenticated();
+
     useEffect(() => {
         if(selectedUser) {
             fetchConversation();
         }
     }, [selectedUser]);
+
 
     const fetchConversation = async () => {
         try {
@@ -42,6 +46,37 @@ function HomePage() {
             console.log("Error fetching messages", error);
         }};
 
+        useEffect(() => {
+            if(!conversationId) return;
+
+            socket.emit("join_conversation", conversationId);
+
+            console.log("Connected to server");
+    
+            const handleIncomingMessage = (msg) => {
+                console.log("Received message", msg);
+
+                if (msg.conversationId === conversationId) {
+                    console.log(`received: ${msg}`);
+                    setMessages((prev) => [...prev, msg]);
+                }
+            };
+            socket.on("connect", () => {
+                console.log("Connected to server");
+            });
+            socket.on("receive_message", handleIncomingMessage);
+            socket.on("disconnect",() => {
+                console.log("Disnnected from server");
+            });;
+    
+        return () => { 
+            socket.emit("leave_conversation", conversationId);
+            socket.off("connect");
+            socket.off("receive_message", handleIncomingMessage);
+            socket.off("disconnect");
+        };
+    }, [conversationId]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!conversationId) return;
@@ -61,22 +96,14 @@ function HomePage() {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                console.error("New message error from server:", errorData);
                 throw new Error('Failed to submit message');
             }
 
-            const result = await response.json();
-            console.log('Message submitted successfully:', result);
-
             setNewMessage('');
-            fetchMessages(conversationId);
         } catch (error) {
             console.error('Error submitting message:', error);
         }
     };
-
-    const isLoggedIn = isAuthenticated();
 
     return (
         <>

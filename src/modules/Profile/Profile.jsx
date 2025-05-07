@@ -18,7 +18,7 @@ function Profile() {
     
          const fetchProfile = async (userId) => {
                 try {
-                    const response = await fetchWithAuth(`${API_URL}/profile/${userId}`);
+                    const response = await fetchWithAuth(`${API_URL}/profile/users/${userId}`);
                     const responseData = await response.json();
                 setFirstName(responseData.firstName);
                 setSurName(responseData.surName);
