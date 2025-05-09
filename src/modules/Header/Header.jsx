@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../../auth/auth';
 import { fetchWithAuth } from '../../utils/api';
+import socket from '../../utils/socket';
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Header ({setLoggedIn}) {
@@ -23,7 +24,9 @@ function Header ({setLoggedIn}) {
             });
     
             if (response.ok) {
+
                 localStorage.removeItem("token");
+                socket.disconnect();
                 navigate('/login');
                 setLoggedIn(false);
                 

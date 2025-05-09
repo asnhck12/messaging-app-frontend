@@ -1,6 +1,7 @@
 import { useState } from "react";
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
+import socket from "../../utils/socket";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function LoginPage () {
@@ -36,6 +37,11 @@ function LoginPage () {
             const result = await response.json();
 
             localStorage.setItem('token', result.token);
+
+            socket.auth = { token: result.token };
+            socket.connect(); 
+            // socket.emit("user_connected", result.userId);
+
 
             setUsername('');
             setPassword('');
