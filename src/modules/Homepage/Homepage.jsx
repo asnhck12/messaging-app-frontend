@@ -5,6 +5,7 @@ import UsersList from "./UsersList";
 import { isAuthenticated } from "../../auth/auth";
 import { Link, Navigate } from "react-router-dom";
 import socket, { connectSocket } from "../../utils/socket";
+import ConversationsList from "./ConversationsList";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -14,6 +15,7 @@ function HomePage() {
     const [selectedUser, setSelectedUser] = useState("");
     const [conversationId, setConversationId] = useState("");
     const [isTyping, setIsTyping] = useState(null);
+    const [contactView, setContactView] = useState(false);
     const typingTimeOutRef = useRef(null);
     const conversationIdRef = useRef(conversationId);
 
@@ -90,6 +92,11 @@ function HomePage() {
         }
     };
 
+    const contactsList = () => {
+        if (contactView) {setContactView(false)}
+        else setContactView(true);
+        }
+
     useEffect(() => {
         if (!conversationId || !socket.connected) return;
 
@@ -163,15 +170,29 @@ function HomePage() {
         <div className="mainSection">
             {isLoggedIn ? (
                 <>
+                <div className="sidePanel">
+                {contactView ? (
+                    <>
+                    <button onClick={contactsList}>Contacts</button>
                     <div className="usersList">
-                        <UsersList setSelectedUser={setSelectedUser} />
+                        <UsersList setSelectedUser={setSelectedUser}/>
+                    </div> 
+                    </>
+                    ) : (
+                    <>
+                    <button onClick={contactsList}>Chats</button>
+                    <div className="conversationsList">
+                        <ConversationsList fetchConversation={fetchConversation}/>
+                    </div> 
+                    </>
+                    )}
                     </div>
                     <div className="messageView">
                         {selectedUser ? (
                             <>
                                 <div className="messageTitle">
                                     <Link to={`/profile/${selectedUser.id}`}>
-                                        <h2>{selectedUser.username} {selectedUser.id}</h2>
+                                        <h2>{selectedUser.username}</h2>
                                     </Link>
                                 </div>
                                 <div className="chatView">
