@@ -16,6 +16,7 @@ function HomePage() {
     const [conversationId, setConversationId] = useState("");
     const [isTyping, setIsTyping] = useState(null);
     const [contactView, setContactView] = useState(false);
+    const [selectedConversation, setSelectedConversation] = useState("");
     const typingTimeOutRef = useRef(null);
     const conversationIdRef = useRef(conversationId);
 
@@ -51,9 +52,15 @@ function HomePage() {
 
     useEffect(() => {
         if (selectedUser) {
-            fetchConversation();
+            fetchConversation({selectedUser});
         }
     }, [selectedUser]);
+
+        useEffect(() => {
+        if (selectedConversation) {
+            fetchConversation({selectedConversation});
+        }
+    }, [selectedConversation]);
 
     const emitTyping = () => {
         if (!conversationId || !socket.connected) return;
@@ -67,26 +74,48 @@ function HomePage() {
         }, 2000);
     };
 
-    const fetchConversation = async () => {
-        try {
-            const response = await fetchWithAuth(`${API_URL}/conversations/findOrCreate`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ selectedUser: selectedUser.id })
-            });
-            const data = await response.json();
-            setConversationId(data.conversation.id);
-            fetchMessages(data.conversation.id);
-        } catch (error) {
-            console.error("Error fetching/creating conversation:", error);
-        }
-    };
+    const fetchConversation = async ({ selectedUser, selectedConversation }) => {
+  try {
+    if (selectedUser?.id) {
+      // Create or retrieve conversation by user ID
+      const response = await fetchWithAuth(`${API_URL}/conversations/findOrCreate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ selectedUser: selectedUser.id }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch or create conversation.");
+      }
+
+      const data = await response.json();
+      const conversationId = data.conversation?.id;
+
+      if (conversationId) {
+        setConversationId(conversationId);
+        fetchMessages(conversationId);
+      } else {
+        throw new Error("Conversation ID missing in response.");
+      }
+
+    } else if (selectedConversation) {
+      setConversationId(selectedConversation);
+      fetchMessages(selectedConversation);
+    } else {
+      throw new Error("No selected user or conversation ID provided.");
+    }
+
+  } catch (error) {
+    console.error("Error fetching/creating conversation:", error);
+  }
+};
 
     const fetchMessages = async (convId) => {
         try {
             const response = await fetchWithAuth(`${API_URL}/messages/${convId}`);
             const responseData = await response.json();
             setMessages(responseData);
+            console.log("messages: ", responseData);
         } catch (error) {
             console.log("Error fetching messages", error);
         }
@@ -182,7 +211,7 @@ function HomePage() {
                     <>
                     <button onClick={contactsList}>Chats</button>
                     <div className="conversationsList">
-                        <ConversationsList fetchConversation={fetchConversation}/>
+                        <ConversationsList setSelectedConversation={setSelectedConversation}/>
                     </div> 
                     </>
                     )}

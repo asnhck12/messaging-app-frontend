@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-function ConversationsList() {
+function ConversationsList({setSelectedConversation}) {
     const [myConversations, setMyConversations] = useState([]);
 
     const fetchMyConversations = async () => {
@@ -19,8 +19,6 @@ function ConversationsList() {
         useEffect(() => {
             fetchMyConversations();
         }, []);
-
-        console.log("messages: ", myConversations[0]);
         
     return (<div className="conversationsList">
   <div>
@@ -30,7 +28,7 @@ function ConversationsList() {
           key={conversation.id}
           id={conversation.id}
           className="conversationSection"
-          onClick={() => console.log(conversation.group)}
+          onClick={() => {setSelectedConversation(conversation.id); console.log("ConversationID: ", conversation.id)}}
         >
           {Array.isArray(conversation.participants) ? (
             <div className="participants">
