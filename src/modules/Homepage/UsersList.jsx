@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { fetchWithAuth } from "../../utils/api";
-import socket, { connectSocket } from "../../utils/socket";
 const API_URL = import.meta.env.VITE_API_URL;
 
-function UsersList({setSelectedUser }) {
+function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds }) {
   const [users, setUsers] = useState([]);
-  const [onlineUserIds, setOnlineUserIds] = useState(new Set());
   const [createGroup, setCreateGroup] = useState(null);
   const [selectedUsers, setSelectedUsers] = useState([]);
 
@@ -19,23 +17,6 @@ function UsersList({setSelectedUser }) {
 
     useEffect(() => {
             fetchUsers();
-        }, []);
-        
-        useEffect(() => {
-            connectSocket();
-          }, []);
-
-
-        useEffect(() => {
-          const handleOnlineUsers = ({ userIds }) => {
-            setOnlineUserIds(new Set(userIds));
-          };
-          
-          socket.on("online_users", handleOnlineUsers);
-          
-          return () => {
-            socket.off("online_users", handleOnlineUsers);
-          };
         }, []);
         
         const toggleUserSelection = (user) => {
@@ -74,7 +55,7 @@ function UsersList({setSelectedUser }) {
                   <div
                   key={user.id}
                   className="userSection"
-                  onClick={() => setSelectedUser(user)}
+                  onClick={() => setSelectedUser([user])}
                   >
                     <p>
                       {user.id} {user.username}{" "}
@@ -88,6 +69,16 @@ function UsersList({setSelectedUser }) {
                 </> ) : (
                   <>
                   <p>Group selection here</p>
+                  <div>
+        <label htmlFor="groupName">Group Name:</label>
+        <input
+          type="text"
+          id="groupName"
+          value={groupName}
+          onChange={(e) => setGroupName(e.target.value)}
+          required
+        />
+      </div>
                   <div>
                     {users.map((user) => (
                       <div
@@ -109,7 +100,10 @@ function UsersList({setSelectedUser }) {
                   </div>
                 
                 <div className="closeGroupCreateButton">
-                    <button onClick={groupSectionClose}>Create</button>
+                    <button onClick={() => { 
+                      setSelectedUser(selectedUsers);
+                      groupSectionClose();
+                      }}>Create</button>
                 </div>
                 <div className="closeGroupCreateButton">
                   <button onClick={groupSectionClose}>Cancel</button>

@@ -12,18 +12,21 @@ const API_URL = import.meta.env.VITE_API_URL;
 function HomePage() {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
-    const [selectedUser, setSelectedUser] = useState("");
+    const [selectedUser, setSelectedUser] = useState([]);
     const [conversationId, setConversationId] = useState("");
     const [isTyping, setIsTyping] = useState(null);
     const [contactView, setContactView] = useState(false);
     const [selectedConversation, setSelectedConversation] = useState("");
+    const [groupName, setGroupName] = useState("");
+    const [onlineUserIds, setOnlineUserIds] = useState(new Set());
+    
     const typingTimeOutRef = useRef(null);
     const conversationIdRef = useRef(conversationId);
 
     const isLoggedIn = isAuthenticated();
 
     useEffect(() => {
-        connectSocket();
+        connectSocket(), [];
 
         const handleConnect = () => {
             console.log("Connected to server");
@@ -51,8 +54,8 @@ function HomePage() {
     }, [conversationId]);
 
     useEffect(() => {
-        if (selectedUser) {
-            fetchConversation({selectedUser});
+        if (selectedUser.length > 0) {
+            fetchConversation({selectedUser, groupName});
         }
     }, [selectedUser]);
 
@@ -61,6 +64,22 @@ function HomePage() {
             fetchConversation({selectedConversation});
         }
     }, [selectedConversation]);
+
+
+            useEffect(() => {
+              const handleOnlineUsers = ({ userIds }) => {
+                const newOnlineUsers = new Set(userIds);
+                setOnlineUserIds(newOnlineUsers);
+                console.log("Online user IDs: ", newOnlineUsers)
+              };
+              
+              socket.on("online_users", handleOnlineUsers);
+              
+              return () => {
+                socket.off("online_users", handleOnlineUsers);
+              };
+            }, []);
+    
 
     const emitTyping = () => {
         if (!conversationId || !socket.connected) return;
@@ -74,14 +93,15 @@ function HomePage() {
         }, 2000);
     };
 
-    const fetchConversation = async ({ selectedUser, selectedConversation }) => {
+    const fetchConversation = async ({ selectedUser, selectedConversation, groupName }) => {
   try {
-    if (selectedUser?.id) {
-      // Create or retrieve conversation by user ID
+    if (selectedUser?.length > 0) {
       const response = await fetchWithAuth(`${API_URL}/conversations/findOrCreate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ selectedUser: selectedUser.id }),
+        body: JSON.stringify({ 
+            selectedUser: selectedUser.map(user => user.id),
+            groupName: groupName || null }),
       });
 
       if (!response.ok) {
@@ -94,6 +114,9 @@ function HomePage() {
       if (conversationId) {
         setConversationId(conversationId);
         fetchMessages(conversationId);
+        if (data.conversation?.name) {
+          setGroupName(data.conversation.name);
+        } else {setGroupName("")}
       } else {
         throw new Error("Conversation ID missing in response.");
       }
@@ -115,7 +138,6 @@ function HomePage() {
             const response = await fetchWithAuth(`${API_URL}/messages/${convId}`);
             const responseData = await response.json();
             setMessages(responseData);
-            console.log("messages: ", responseData);
         } catch (error) {
             console.log("Error fetching messages", error);
         }
@@ -195,72 +217,108 @@ function HomePage() {
         }
     };
 
+
     return (
-        <div className="mainSection">
-            {isLoggedIn ? (
-                <>
-                <div className="sidePanel">
-                {contactView ? (
-                    <>
-                    <button onClick={contactsList}>Contacts</button>
-                    <div className="usersList">
-                        <UsersList setSelectedUser={setSelectedUser}/>
-                    </div> 
-                    </>
-                    ) : (
-                    <>
-                    <button onClick={contactsList}>Chats</button>
-                    <div className="conversationsList">
-                        <ConversationsList setSelectedConversation={setSelectedConversation}/>
-                    </div> 
-                    </>
-                    )}
-                    </div>
-                    <div className="messageView">
-                        {selectedUser ? (
-                            <>
-                                <div className="messageTitle">
-                                    <Link to={`/profile/${selectedUser.id}`}>
-                                        <h2>{selectedUser.username}</h2>
-                                    </Link>
-                                </div>
-                                <div className="chatView">
-                                    {messages.map((message) => (
-                                        <div
-                                            key={message.id}
-                                            className={"messageSection " + (message.sender.username === selectedUser.username ? 'recipient' : 'sender')}
-                                        >
-                                            <p>{message.sender.username}: {message.content}</p>
-                                        </div>
-                                    ))}
-                                    {isTyping && (
-                                        <p className="typing-indicator">{selectedUser.username} is typing...</p>
-                                    )}
-                                    <form onSubmit={handleSubmit}>
-                                        <input
-                                            type="text"
-                                            name="newMessage"
-                                            value={newMessage}
-                                            onChange={(e) => {
-                                                setNewMessage(e.target.value);
-                                                emitTyping();
-                                            }}
-                                            required
-                                        />
-                                        <button type="submit">Submit</button>
-                                    </form>
-                                </div>
-                            </>
-                        ) : (
-                            <p>No user selected</p>
-                        )}
-                    </div>
-                </>
-            ) : (
-                <Navigate to="/login" replace />
-            )}
+  <div className="mainSection">
+    {isLoggedIn ? (
+      <>
+        <div className="sidePanel">
+          {contactView ? (
+            <>
+              <button onClick={contactsList}>Chats</button>
+              <div className="usersList">
+                <UsersList 
+                setSelectedUser={setSelectedUser} 
+                groupName={groupName}
+                setGroupName={setGroupName}
+                setOnlineUserIds={setOnlineUserIds}
+                onlineUserIds={onlineUserIds}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <button onClick={contactsList}>Contacts</button>
+              <div className="conversationsList">
+                <ConversationsList
+                  setSelectedConversation={setSelectedConversation}
+                  setSelectedUser={setSelectedUser}
+                  setGroupName={setGroupName}
+                />
+              </div>
+            </>
+          )}
         </div>
-    );
+
+        <div className="messageView">
+          {conversationId ? (
+            <>
+              <div className="messageTitle">
+                {groupName && (
+                    <h3>{groupName}</h3>
+                    )}
+                    {selectedUser.map((user, index) => (
+                        <span key={user.id}>
+                            <Link to={`/profile/${user.id}`}>{user.username}</Link>
+                            <span style={{ color: onlineUserIds.has(user.id) ? "green" : "gray" }}>
+                        ● {onlineUserIds.has(user.id) ? "Online" : "Offline"}
+                      </span>
+                            {index < selectedUser.length - 1 && ', '}
+                        </span>
+                    ))}
+                    </div>
+
+              <div className="chatView">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={
+                      "messageSection " +
+                      (selectedUser.some(
+                        (user) => user.username === message.sender.username
+                      )
+                        ? "recipient"
+                        : "sender")
+                    }
+                  >
+                    <p>
+                      {message.sender.username}: {message.content}
+                    </p>
+                  </div>
+                ))}
+
+                {isTyping && (
+                  <p className="typing-indicator">
+                    {selectedUser[0]?.username} is typing...
+                  </p>
+                )}
+
+                <form onSubmit={handleSubmit}>
+                  <input
+                    type="text"
+                    name="newMessage"
+                    value={newMessage}
+                    onChange={(e) => {
+                      setNewMessage(e.target.value);
+                      emitTyping();
+                    }}
+                    required
+                  />
+                  <button type="submit">Submit</button>
+                </form>
+              </div>
+            </>
+          ) : (
+            <p>No user selected</p>
+          )}
+        </div>
+      </>
+    ) : (
+      <Navigate to="/login" replace />
+    )}
+  </div>
+);
+
 }
 
 export default HomePage;
