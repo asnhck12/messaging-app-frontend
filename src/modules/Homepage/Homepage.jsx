@@ -1,13 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import './Homepage.css';
-// import { fetchWithAuth } from "../../utils/api";
 import UsersList from "./UsersList";
 import { isAuthenticated } from "../../auth/auth";
 import { Link, Navigate } from "react-router-dom";
-import socket, { connectSocket } from "../../utils/socket";
 import ConversationsList from "./ConversationsList";
 import useConversation from "../../hooks/useConversation";
-// import useSocketListeners from "../../hooks/useSockets";
+import useSocketListeners from "../../hooks/useSockets";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -22,7 +20,6 @@ function HomePage() {
     selectedUser,
     setSelectedUser,
     conversationId,
-    // selectedConversation,
     setSelectedConversation,
     groupName,
     setGroupName,
@@ -34,91 +31,12 @@ function HomePage() {
     handleSubmit
   } = useConversation();
 
-    useEffect(() => {
-        connectSocket(), [];
+    useSocketListeners({ conversationId, setMessages, setIsTyping, setOnlineUserIds });
 
-        const handleConnect = () => {
-            console.log("Connected to server");
-        };
-        const handleDisconnect = () => {
-            console.log("Disconnected from server");
-        };
-        const handleConnectError = (err) => {
-            console.error("Connection error:", err.message);
-        };
-
-        socket.on("connect", handleConnect);
-        socket.on("disconnect", handleDisconnect);
-        socket.on("connect_error", handleConnectError);
-
-        return () => {
-            socket.off("connect", handleConnect);
-            socket.off("disconnect", handleDisconnect);
-            socket.off("connect_error", handleConnectError);
-        };
-    }, []);
-
-            useEffect(() => {
-              const handleOnlineUsers = ({ userIds }) => {
-                const newOnlineUsers = new Set(userIds);
-                setOnlineUserIds(newOnlineUsers);
-                console.log("Online user IDs: ", newOnlineUsers)
-              };
-              
-              socket.on("online_users", handleOnlineUsers);
-              
-              return () => {
-                socket.off("online_users", handleOnlineUsers);
-              };
-            }, []);
-    
     const contactsList = () => {
         if (contactView) {setContactView(false)}
         else setContactView(true);
         }
-
-    useEffect(() => {
-        if (!conversationId || !socket.connected) return;
-
-        socket.emit("join_conversation", conversationId);
-
-        const handleIncomingMessage = (msg) => {
-            if (msg.conversationId === conversationId) {
-                setMessages((prev) => [...prev, msg]);
-            }
-        };
-
-        socket.on("receive_message", handleIncomingMessage);
-
-        return () => {
-            socket.emit("leave_conversation", conversationId);
-            socket.off("receive_message", handleIncomingMessage);
-        };
-    }, [conversationId]);
-
-    useEffect(() => {
-        if (!conversationId || !socket.connected) return;
-
-        const handleIncomingTyping = () => {
-            // if (typingConvId === conversationIdRef.current) {
-                setIsTyping(true);
-            // }
-        };
-
-        const handleStopIncomingTyping = () => {
-            // if (typingConvId === conversationIdRef.current) {
-                setIsTyping(false);
-            // }
-        };
-
-        socket.on("set_typing", handleIncomingTyping);
-        socket.on("set_stop_typing", handleStopIncomingTyping);
-
-        return () => {
-            socket.off("set_typing", handleIncomingTyping);
-            socket.off("set_stop_typing", handleStopIncomingTyping);
-        };
-    }, [conversationId]);
 
     return (
   <div className="mainSection">
