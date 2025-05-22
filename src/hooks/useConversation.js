@@ -13,9 +13,9 @@ const useConversation = () => {
   const [groupName, setGroupName] = useState("");
   const [onlineUserIds, setOnlineUserIds] = useState(new Set());
   const [isTyping, setIsTyping] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
 
   const typingTimeOutRef = useRef(null);
-//   const conversationIdRef = useRef(conversationId);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -23,10 +23,6 @@ const useConversation = () => {
       connectSocket();
     }
   }, []);
-
-//   useEffect(() => {
-//     conversationIdRef.current = conversationId;
-//   }, [conversationId]);
 
   useEffect(() => {
     if (selectedUser.length > 0) {
@@ -101,21 +97,21 @@ const useConversation = () => {
     e.preventDefault();
     if (!conversationId) return;
 
-    const newMessagePayload = {
-      content: newMessage,
-      conversationId,
-    };
+    const formData = new FormData();
+    formData.append("conversationId", conversationId);
+    if (newMessage) formData.append("content", newMessage);
+    if (imageFile) formData.append("image", imageFile);
 
     try {
       const response = await fetchWithAuth(`${API_URL}/messages/newmessage`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newMessagePayload),
+        body: formData,
       });
 
       if (!response.ok) throw new Error("Failed to submit message");
 
       setNewMessage("");
+      setImageFile(null);
     } catch (error) {
       console.error("Error submitting message:", error);
     }
@@ -138,7 +134,9 @@ const useConversation = () => {
     isTyping,
     setIsTyping,
     emitTyping,
-    handleSubmit
+    handleSubmit,
+    imageFile,
+    setImageFile
   };
 };
 

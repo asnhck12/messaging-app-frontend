@@ -6,6 +6,8 @@ import { Link, Navigate } from "react-router-dom";
 import ConversationsList from "./ConversationsList";
 import useConversation from "../../hooks/useConversation";
 import useSocketListeners from "../../hooks/useSockets";
+import ChatHeader from "./ChatHeader";
+import ChatView from "./ChatView";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -28,7 +30,9 @@ function HomePage() {
     isTyping,
     setIsTyping,
     emitTyping,
-    handleSubmit
+    handleSubmit,
+    imageFile,
+    setImageFile
   } = useConversation();
 
     useSocketListeners({ conversationId, setMessages, setIsTyping, setOnlineUserIds });
@@ -38,107 +42,55 @@ function HomePage() {
         else setContactView(true);
         }
 
+        if (!isLoggedIn) return <Navigate to="/login" replace />
+
+
     return (
-  <div className="mainSection">
-    {isLoggedIn ? (
-      <>
-        <div className="sidePanel">
-          {contactView ? (
-            <>
-              <button onClick={contactsList}>Chats</button>
-              <div className="usersList">
-                <UsersList 
-                setSelectedUser={setSelectedUser} 
-                groupName={groupName}
-                setGroupName={setGroupName}
-                setOnlineUserIds={setOnlineUserIds}
-                onlineUserIds={onlineUserIds}
-                />
-              </div>
-            </>
-          ) : (
-            <>
-              <button onClick={contactsList}>Contacts</button>
-              <div className="conversationsList">
-                <ConversationsList
-                  setSelectedConversation={setSelectedConversation}
-                  setSelectedUser={setSelectedUser}
-                  setGroupName={setGroupName}
-                />
-              </div>
-            </>
-          )}
-        </div>
-
-        <div className="messageView">
-          {conversationId ? (
-            <>
-              <div className="messageTitle">
-                {groupName && (
-                    <h3>{groupName}</h3>
-                    )}
-                    {selectedUser.map((user, index) => (
-                        <span key={user.id}>
-                            <Link to={`/profile/${user.id}`}>{user.username}</Link>
-                            <span style={{ color: onlineUserIds.has(user.id) ? "green" : "gray" }}>
-                        ● {onlineUserIds.has(user.id) ? "Online" : "Offline"}
-                      </span>
-                            {index < selectedUser.length - 1 && ', '}
-                        </span>
-                    ))}
-                    </div>
-
-              <div className="chatView">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={
-                      "messageSection " +
-                      (selectedUser.some(
-                        (user) => user.username === message.sender.username
-                      )
-                        ? "recipient"
-                        : "sender")
-                    }
-                  >
-                    <p>
-                      {message.sender.username}: {message.content}
-                    </p>
-                  </div>
-                ))}
-
-                {isTyping && (
-                  <p className="typing-indicator">
-                    {selectedUser[0]?.username} is typing...
-                  </p>
-                )}
-
-                <form onSubmit={handleSubmit}>
-                  <input
-                    type="text"
-                    name="newMessage"
-                    value={newMessage}
-                    onChange={(e) => {
-                      setNewMessage(e.target.value);
-                      emitTyping();
-                    }}
-                    required
-                  />
-                  <button type="submit">Submit</button>
-                </form>
-              </div>
-            </>
-          ) : (
-            <p>No user selected</p>
-          )}
-        </div>
-      </>
-    ) : (
-      <Navigate to="/login" replace />
-    )}
-  </div>
-);
-
+    <div className="mainSection">
+      <div className="sidePanel">
+        <button onClick={contactsList}>{contactView ? "Chats" : "Contacts"}</button>
+        {contactView ? (
+          <UsersList
+            setSelectedUser={setSelectedUser}
+            groupName={groupName}
+            setGroupName={setGroupName}
+            onlineUserIds={onlineUserIds}
+            setOnlineUserIds={setOnlineUserIds}
+          />
+        ) : (
+          <ConversationsList
+            setSelectedConversation={setSelectedConversation}
+            setSelectedUser={setSelectedUser}
+            setGroupName={setGroupName}
+          />
+        )}
+      </div>
+      <div className="messageView">
+        {conversationId ? (
+          <>
+            <ChatHeader
+              groupName={groupName}
+              selectedUser={selectedUser}
+              onlineUserIds={onlineUserIds}
+            />
+            <ChatView
+              messages={messages}
+              isTyping={isTyping}
+              newMessage={newMessage}
+              setNewMessage={setNewMessage}
+              handleSubmit={handleSubmit}
+              emitTyping={emitTyping}
+              selectedUser={selectedUser}
+              imageFile={imageFile}
+              setImageFile={setImageFile}
+            />
+          </>
+        ) : (
+          <p>No user selected</p>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default HomePage;

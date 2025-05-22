@@ -1,10 +1,12 @@
 export const fetchWithAuth = async (url, options = {}, navigate) => {
     const token = localStorage.getItem('token');
     
-    const headers = {
-        'Content-Type': 'application/json',
-        ...options.headers,
-    };
+    const headers = options.headers ? { ...options.headers } : {};
+
+    const isFormData = options.body instanceof FormData;
+    if (!isFormData) {
+      headers["Content-Type"] = "application/json";
+    }
 
     if (token) {
         headers['Authorization'] = `Bearer ${token}`;
