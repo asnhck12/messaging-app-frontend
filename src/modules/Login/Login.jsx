@@ -40,8 +40,6 @@ function LoginPage () {
 
             socket.auth = { token: result.token };
             socket.connect(); 
-            // socket.emit("user_connected", result.userId);
-
 
             setUsername('');
             setPassword('');
@@ -51,6 +49,30 @@ function LoginPage () {
             
         } catch (error) {
             console.error('Error submitting post:', error);
+        }
+    };
+
+    const handleGuestLogin = async () => {
+        try {
+            const response = await fetch(`${API_URL}/users/guestLogin`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                setErrorMessage(result.message || 'Failed to login as guest');
+                return;
+            }
+
+            localStorage.setItem('token', result.token);
+            socket.auth = { token: result.token };
+            socket.connect();
+            navigate('/');
+        } catch (error) {
+            console.error("Guest login error:", error);
+            setErrorMessage("Guest login failed");
         }
     };
 
@@ -65,6 +87,14 @@ function LoginPage () {
                 <input type="password" name="password" onChange={(e) => setPassword(e.target.value)} required/>
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
                 <button type="submit">Login</button>
+                <button
+                        type="button"
+                        className="guest-login-button"
+                        onClick={handleGuestLogin}
+                        style={{ marginTop: '10px' }}
+                    >
+                        Continue as Guest
+                    </button>
             </div>
         </form>
     </div>
