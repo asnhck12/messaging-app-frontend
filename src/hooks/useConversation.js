@@ -87,7 +87,17 @@ const useConversation = () => {
     try {
       const response = await fetchWithAuth(`${API_URL}/messages/${convId}`);
       const responseData = await response.json();
-      setMessages(responseData);
+
+      const messages = responseData.map(msg => ({
+      ...msg,
+        sender: msg.sender
+          ? {
+              ...msg.sender,
+              username: msg.sender.isDeleted ? "Deleted User" : msg.sender.username,
+            }
+          : { username: "Deleted User", id: null }
+    }));
+      setMessages(messages);
     } catch (error) {
       console.error("Error fetching messages", error);
     }

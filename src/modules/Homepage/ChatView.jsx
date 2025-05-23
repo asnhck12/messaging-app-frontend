@@ -19,13 +19,14 @@ const ChatView = ({
           key={message.id}
           className={
             "messageSection " +
-            (selectedUser.some((user) => user.username === message.sender.username)
-              ? "recipient"
-              : "sender")
+            (selectedUser.some(user => user.username === message.sender?.username)
+            ? "recipient"
+            : "sender")
           }
         >
           <p>
-            {message.sender.username}: {message.content}
+            {message.sender?.isDeleted ? "Deleted User" : message.sender?.username}:{" "}
+            {message.content}
           </p>
           {message.imageUrl && (
       <img

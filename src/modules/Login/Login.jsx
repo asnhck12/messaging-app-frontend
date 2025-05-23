@@ -30,9 +30,13 @@ function LoginPage () {
 
             if (!response.ok) {
                 const result = await response.json();
-                setErrorMessage(result.message || 'Failed to log in');
-                throw new Error('Failed to submit login');
-            }
+                if (result.message === "User account has been deleted") {
+                    setErrorMessage("This account has been deleted. Please contact support or create a new account.");
+                } else {
+                    setErrorMessage(result.message || "Failed to log in.");
+    }
+    return;
+}
 
             const result = await response.json();
 

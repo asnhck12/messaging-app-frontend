@@ -31,7 +31,7 @@ function ConversationsList({setSelectedConversation, setSelectedUser}) {
             className="conversationSection"
             onClick={() => {
               setSelectedConversation(conversation.id);
-              setSelectedUser(conversation.participants.map(p => p.user));
+              setSelectedUser(conversation.participants.map(p => p.user ?? { id: null, username: "Deleted User"}));
             }}
           >
             {conversation.isGroup ? (
@@ -41,7 +41,9 @@ function ConversationsList({setSelectedConversation, setSelectedUser}) {
             ) : Array.isArray(conversation.participants) ? (
               <div className="participants">
                 {conversation.participants.map((participant, index) => (
-                  <p key={index}>{participant.user.username}</p>
+                    <p key={index}>
+                        {participant.user.isDeleted ? "Deleted User" : participant.user.username}
+                    </p>
                 ))}
               </div>
             ) : (

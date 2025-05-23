@@ -8,13 +8,17 @@ const ChatHeader = ({ groupName, selectedUser, onlineUserIds }) => {
 
       {selectedUser.map((user, index) => (
         <span key={user.id}>
-          <Link to={`/profile/${user.id}`}>{user.username}</Link>{" "}
-          <span style={{ color: onlineUserIds.has(user.id) ? "green" : "gray" }}>
-            ● {onlineUserIds.has(user.id) ? "Online" : "Offline"}
-          </span>
-          {index < selectedUser.length - 1 && ", "}
-        </span>
-      ))}
+            {user.isDeleted ? (
+                <span>Deleted User</span>
+            ) : (
+            <Link to={`/profile/${user.id}`}>{user.username}</Link>
+            )}
+            <span style={{ color: onlineUserIds.has(user.id) ? "green" : "gray" }}>
+                ● {onlineUserIds.has(user.id) ? "Online" : "Offline"}
+            </span>
+            {index < selectedUser.length - 1 && ", "}
+            </span>
+        ))}
     </div>
   );
 };
