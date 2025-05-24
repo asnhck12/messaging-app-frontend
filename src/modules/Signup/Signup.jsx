@@ -64,6 +64,11 @@ function SignupPage () {
                 <button type="submit">Sign Up</button>
             </div>
         </form>
+        <div className="homePageButton">
+            <button onClick={() => navigate('/')}>
+                    Back
+            </button>
+            </div>
     </div>
     </>
     )

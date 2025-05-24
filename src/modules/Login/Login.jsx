@@ -91,6 +91,9 @@ function LoginPage () {
                 <input type="password" name="password" onChange={(e) => setPassword(e.target.value)} required/>
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
                 <button type="submit">Login</button>
+                <button onClick={() => navigate('/signup')}>
+                    Signup
+                </button>
                 <button
                         type="button"
                         className="guest-login-button"

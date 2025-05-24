@@ -57,13 +57,7 @@ function Header ({setLoggedIn}) {
                         <a href="#" onClick={handleLogout}>Logout</a>
                     </div>
                 </>
-            ) : (
-                <>
-                    <div className="signupButton">
-                        <Link to='signup'>Signup</Link>
-                    </div>
-                </>
-            )}
+            ) : null }
         </div>
     </div>
 </>
