@@ -94,12 +94,7 @@ function LoginPage () {
                 <button onClick={() => navigate('/signup')}>
                     Signup
                 </button>
-                <button
-                        type="button"
-                        className="guest-login-button"
-                        onClick={handleGuestLogin}
-                        style={{ marginTop: '10px' }}
-                    >
+                <button onClick={handleGuestLogin}>
                         Continue as Guest
                     </button>
             </div>

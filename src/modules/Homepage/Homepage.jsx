@@ -8,12 +8,17 @@ import useConversation from "../../hooks/useConversation";
 import useSocketListeners from "../../hooks/useSockets";
 import ChatHeader from "./ChatHeader";
 import ChatView from "./ChatView";
+import closeIcon from "../../assets/images/closeicon.svg";
+import addressBookIcon from "../../assets/images/addressbookicon.svg";
+import chatIcon from "../../assets/images/chaticon.svg";
+import menuIcon from "../../assets/images/menuicon.svg";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function HomePage() {
     const [contactView, setContactView] = useState(false);
     const isLoggedIn = isAuthenticated();
+    const [messageView, setMessageView] = useState(false);
       const {
     messages,
     setMessages,
@@ -44,11 +49,23 @@ function HomePage() {
 
         if (!isLoggedIn) return <Navigate to="/login" replace />
 
+    
+    const mobileView = () => {
+      if (messageView) {
+        setMessageView(false);
+      } else if (!messageView) {
+        setMessageView(true);
+      }
+    }
+
 
     return (
     <div className="mainSection">
-      <div className="sidePanel">
-        <button onClick={contactsList}>{contactView ? "Chats" : "Contacts"}</button>
+      <div className={`sidePanel ${messageView ? '' : 'viewOn'}`}>
+        <div className="sidePanelViewButton">
+          <img src={closeIcon} onClick={mobileView} />
+        </div>
+        <img onClick={contactsList} src={contactView ? chatIcon : addressBookIcon} />
         {contactView ? (
           <UsersList
             setSelectedUser={setSelectedUser}
@@ -65,7 +82,10 @@ function HomePage() {
           />
         )}
       </div>
-      <div className="messageView">
+      <div className={`messageView ${messageView ? 'viewOn' : ''}`}>
+        <div className="messagePanelViewButton">
+          <img src={menuIcon} onClick={mobileView} />
+        </div>
         {conversationId ? (
           <>
             <ChatHeader

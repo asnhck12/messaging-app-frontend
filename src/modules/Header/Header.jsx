@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../../auth/auth';
 import { fetchWithAuth } from '../../utils/api';
+import signouticon from "../../assets/images/signouticon.svg";
+import profileicon from "../../assets/images/profileicon.svg";
 import socket from '../../utils/socket';
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -51,10 +53,14 @@ function Header ({setLoggedIn}) {
             {isLoggedIn ? (
                 <>
                 <div className='updateProfile'>
-                    <Link to='update'>My Profile</Link>
+                    <Link to='update'>
+                    <img src={profileicon} />
+                    </Link>
                 </div>
                     <div className="logoutButton">
-                        <a href="#" onClick={handleLogout}>Logout</a>
+                        <a  href="#" onClick={handleLogout}>
+                        <img src={signouticon} />
+                        </a>
                     </div>
                 </>
             ) : null }

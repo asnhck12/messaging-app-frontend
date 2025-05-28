@@ -1,4 +1,4 @@
-import icon from "/src/assets/github_icon.svg";
+import icon from "/src/assets/images/github_icon.svg";
 import './Footer.css';
 
 function Footer () {

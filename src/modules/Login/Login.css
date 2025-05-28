@@ -4,8 +4,13 @@
     flex:auto;
   }
 
+  .loginForm {
+    display: flex; 
+    flex-direction: column;
+  }
+
   .loginForm button {
-    margin-top: 30px;
+    margin-top: 20px;
     border: 1px black solid;
   }
 
