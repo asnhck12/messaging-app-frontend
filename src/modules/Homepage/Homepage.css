@@ -10,26 +10,45 @@ img {
 
 .mainSection {
     display: flex;
-    flex-direction: row;
-    height: inherit;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
 }
 
-.usersList {
+.sidePanel {
+    display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.usersList, .conversationsList {
     width: 25%;
     display: flex;
     flex-flow: column;
     align-items: center;
+    flex: 1;
+    overflow: auto;
 }
 
 .messageView {
     width: 75%;
     display: flex;
-    flex-flow: column;
     align-items: center;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .messageTitle, .chatView {
     width: 100%;
+}
+
+.chatView {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
 }
 
 .messageTitle {
@@ -42,6 +61,12 @@ img {
 
 .sender {
     text-align: end;
+}
+
+.chatMessagesView {
+    flex: 1;
+    overflow: auto;
+
 }
 
 .chatView form {

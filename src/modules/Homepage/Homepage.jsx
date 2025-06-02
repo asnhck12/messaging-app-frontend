@@ -37,10 +37,12 @@ function HomePage() {
     emitTyping,
     handleSubmit,
     imageFile,
-    setImageFile
+    setImageFile,
+    myConversations,
+    fetchMyConversations
   } = useConversation();
 
-    useSocketListeners({ conversationId, setMessages, setIsTyping, setOnlineUserIds });
+    useSocketListeners({ conversationId, setMessages, setIsTyping, setOnlineUserIds, fetchMyConversations });
 
     const contactsList = () => {
         if (contactView) {setContactView(false)}
@@ -73,12 +75,15 @@ function HomePage() {
             setGroupName={setGroupName}
             onlineUserIds={onlineUserIds}
             setOnlineUserIds={setOnlineUserIds}
+            mobileView={mobileView}
           />
         ) : (
           <ConversationsList
             setSelectedConversation={setSelectedConversation}
             setSelectedUser={setSelectedUser}
             setGroupName={setGroupName}
+            mobileView={mobileView}
+            myConversations={myConversations}
           />
         )}
       </div>

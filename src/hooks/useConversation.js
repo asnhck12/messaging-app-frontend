@@ -14,6 +14,7 @@ const useConversation = () => {
   const [onlineUserIds, setOnlineUserIds] = useState(new Set());
   const [isTyping, setIsTyping] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [myConversations, setMyConversations] = useState([]);
 
   const typingTimeOutRef = useRef(null);
 
@@ -122,10 +123,26 @@ const useConversation = () => {
 
       setNewMessage("");
       setImageFile(null);
+      fetchMyConversations();
     } catch (error) {
       console.error("Error submitting message:", error);
     }
   };
+   
+    const fetchMyConversations = async () => {
+            try {
+                const response = await fetchWithAuth(`${API_URL}/conversations/find`);
+                const data = await response.json();
+                setMyConversations(data.conversations || []);
+            } catch (error) {
+                console.error("Error fetching conversations:", error);
+            }
+        };
+
+        useEffect(() => {
+            fetchMyConversations();
+        }, []);
+
 
   return {
     messages,
@@ -146,7 +163,9 @@ const useConversation = () => {
     emitTyping,
     handleSubmit,
     imageFile,
-    setImageFile
+    setImageFile,
+    fetchMyConversations,
+    myConversations
   };
 };
 

@@ -1,30 +1,16 @@
-import { fetchWithAuth } from "../../utils/api";
-import { useEffect, useState } from "react";
-
 const API_URL = import.meta.env.VITE_API_URL;
 
-function ConversationsList({setSelectedConversation, setSelectedUser}) {
-    const [myConversations, setMyConversations] = useState([]);
-
-    const fetchMyConversations = async () => {
-            try {
-                const response = await fetchWithAuth(`${API_URL}/conversations/find`);
-                const data = await response.json();
-                setMyConversations(data.conversations || []);
-            } catch (error) {
-                console.error("Error fetching conversations:", error);
-            }
-        };
-
-        useEffect(() => {
-            fetchMyConversations();
-        }, []);
+function ConversationsList({setSelectedConversation, setSelectedUser, mobileView, myConversations}) {
         
     return (
   <div className="conversationsList">
     <div>
       {myConversations.length > 0 ? (
-        myConversations.map((conversation) => (
+        myConversations.slice().sort((a, b) => {
+          const aLast = a.messages?.[0]?.createdAt ?? a.createdAt;
+          const bLast = b.messages?.[0]?.createdAt ?? b.createdAt;
+          console.log("aLast:", aLast, "bLast:", bLast);
+          return new Date(bLast) - new Date(aLast);}).map((conversation) => (
           <div
             key={conversation.id}
             id={conversation.id}
@@ -32,6 +18,7 @@ function ConversationsList({setSelectedConversation, setSelectedUser}) {
             onClick={() => {
               setSelectedConversation(conversation.id);
               setSelectedUser(conversation.participants.map(p => p.user ?? { id: null, username: "Deleted User"}));
+              mobileView();
             }}
           >
             {conversation.isGroup ? (

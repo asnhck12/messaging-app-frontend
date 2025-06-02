@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useRef }  from "react";
 const API_URL = import.meta.env.VITE_API_URL;
+import sendIcon from "../../assets/images/sendicon.svg";
+import attachIcon from "../../assets/images/attachicon.svg";
+import attachedIcon from "../../assets/images/attachedicon.svg";
 
 const ChatView = ({
   messages,
@@ -12,8 +15,17 @@ const ChatView = ({
   imageFile,
   setImageFile
 }) => {
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   return (
     <div className="chatView">
+      <div className="chatMessagesView">
       {messages.map((message) => (
         <div
           key={message.id}
@@ -39,6 +51,9 @@ const ChatView = ({
         </div>
       ))}
 
+      <div ref={bottomRef} />
+      </div>
+
       {isTyping && (
         <p className="typing-indicator">
           {selectedUser[0]?.username} is typing...
@@ -57,15 +72,20 @@ const ChatView = ({
     placeholder="Type a message"
   />
 
+    <label htmlFor="fileInput" style={{ cursor: 'pointer' }}>
+      <img src={imageFile ? attachedIcon : attachIcon} />
+    </label>
   <input
+    id="fileInput"
     type="file"
     accept="image/*"
     onChange={(e) => setImageFile(e.target.files[0])}
+    style={{display: 'none'}}
   />
 
-  <button type="submit" disabled={!newMessage && !imageFile}>
-    Send
-  </button>
+  <button type="submit" disabled={!newMessage && !imageFile} style={{ background: 'none', border: 'none', padding: 0 }}>
+  <img src={sendIcon} style={{ cursor: 'pointer' }} />
+</button>
 </form>
     </div>
   );

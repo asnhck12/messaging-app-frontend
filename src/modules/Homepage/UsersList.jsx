@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchWithAuth } from "../../utils/api";
 const API_URL = import.meta.env.VITE_API_URL;
 
-function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds }) {
+function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds, mobileView }) {
   const [users, setUsers] = useState([]);
   const [createGroup, setCreateGroup] = useState(null);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -48,17 +48,18 @@ function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds }) {
           {!createGroup ? (
             <>
             <div className="groupCreateButton">
-              <button onClick={groupSectionOpen}>Create Group</button>
+              <button onClick = {groupSectionOpen}>Create Group</button>
               </div>
               <div>
                 {users.map((user) => (
                   <div
                   key={user.id}
                   className="userSection"
-                  onClick={() => setSelectedUser([user])}
+                  onClick={() => {setSelectedUser([user]);
+                    mobileView();}}
                   >
                     <p>
-                      {user.id} {user.username}{" "}
+                      {user.username}{" "}
                       <span style={{ color: onlineUserIds.has(user.id) ? "green" : "gray" }}>
                         ● {onlineUserIds.has(user.id) ? "Online" : "Offline"}
                       </span>
@@ -80,7 +81,11 @@ function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds }) {
         />
       </div>
                   <div>
-                    {users.map((user) => (
+                    {users.slice().sort((a, b) => {
+                      const aOnline = onlineUserIds.has(a.id);
+                      const bOnline = onlineUserIds.has(b.id);
+                      if (aOnline !== bOnline) return bOnline - aOnline;
+                      return a.username.toLowerCase().localeCompare(b.username.toLowerCase());}).map((user) => (
                       <div
                       key={user.id}
                       className={`userSection ${isUserSelected(user.id) ? "selected" : ""}`}
@@ -102,6 +107,7 @@ function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds }) {
                 <div className="closeGroupCreateButton">
                     <button onClick={() => { 
                       setSelectedUser(selectedUsers);
+                      mobileView();
                       groupSectionClose();
                       }}>Create</button>
                 </div>

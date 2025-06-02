@@ -1,14 +1,20 @@
 import { useEffect } from "react";
 import socket from "../utils/socket";
 
-const useSocketListeners = ({ conversationId, setMessages, setIsTyping, setOnlineUserIds }) => {
+const useSocketListeners = ({ conversationId, setMessages, setIsTyping, setOnlineUserIds, fetchMyConversations }) => {
   useEffect(() => {
     if (!socket) return;
     // connectSocket();
 
     const handleReceiveMessage = (message) => {
-      setMessages(prev => [...prev, message]);
-    };
+  if (message.conversationId === conversationId) {
+    setMessages(prev => [...prev, message]);
+  }
+
+  if (fetchMyConversations) {
+    fetchMyConversations();
+  }
+};
 
     const handleTyping = () => {
       setIsTyping(true);

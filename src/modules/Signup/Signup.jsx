@@ -63,12 +63,12 @@ function SignupPage () {
                 <input type="password" name="confirm_password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required/>
                 <button type="submit">Sign Up</button>
             </div>
-        </form>
-        <div className="homePageButton">
-            <button onClick={() => navigate('/')}>
+            <div className="homePageButton">
+                <button onClick={() => navigate('/')}>
                     Back
-            </button>
+                </button>
             </div>
+        </form>
     </div>
     </>
     )
