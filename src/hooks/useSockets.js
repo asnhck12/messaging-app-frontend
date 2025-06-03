@@ -6,10 +6,8 @@ const useSocketListeners = ({ conversationId, setMessages, setIsTyping, setOnlin
     if (!socket) return;
     // connectSocket();
 
-    const handleReceiveMessage = (message) => {
-  if (message.conversationId === conversationId) {
-    setMessages(prev => [...prev, message]);
-  }
+  const handleReceiveMessage = (message) => {
+  setMessages(prev => [...prev, message]);
 
   if (fetchMyConversations) {
     fetchMyConversations();
@@ -28,12 +26,18 @@ const useSocketListeners = ({ conversationId, setMessages, setIsTyping, setOnlin
       setOnlineUserIds(new Set(userIds));
     };
 
+      const handleConversationsUpdated = () => {
+    fetchMyConversations();
+  };
+
+    socket.on('conversations_updated', handleConversationsUpdated);
     socket.on("receive_message", handleReceiveMessage);
     socket.on("typing", handleTyping);
     socket.on("stop_typing", handleStopTyping);
     socket.on("online_users", handleOnlineUsers);
 
     return () => {
+      socket.off('conversations_updated', handleConversationsUpdated);
       socket.off("receive_message", handleReceiveMessage);
       socket.off("typing", handleTyping);
       socket.off("stop_typing", handleStopTyping);

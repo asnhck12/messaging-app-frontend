@@ -84,6 +84,19 @@ const useConversation = () => {
     }
   };
 
+
+  const markConversationAsRead = async (convId) => {
+    try {
+      await fetchWithAuth(`${API_URL}/messages/markasread`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ conversationId: convId }),
+      });
+    } catch (error) {
+      console.error("Failed to mark messages as read", error);
+    }
+  };
+
   const fetchMessages = async (convId) => {
     try {
       const response = await fetchWithAuth(`${API_URL}/messages/${convId}`);
@@ -99,6 +112,8 @@ const useConversation = () => {
           : { username: "Deleted User", id: null }
     }));
       setMessages(messages);
+      await markConversationAsRead(convId);
+      fetchMyConversations();
     } catch (error) {
       console.error("Error fetching messages", error);
     }
@@ -133,7 +148,8 @@ const useConversation = () => {
             try {
                 const response = await fetchWithAuth(`${API_URL}/conversations/find`);
                 const data = await response.json();
-                setMyConversations(data.conversations || []);
+                setMyConversations([...data.conversations]);
+                console.log("data convs: ", data);
             } catch (error) {
                 console.error("Error fetching conversations:", error);
             }
@@ -165,7 +181,8 @@ const useConversation = () => {
     imageFile,
     setImageFile,
     fetchMyConversations,
-    myConversations
+    myConversations,
+    markConversationAsRead
   };
 };
 

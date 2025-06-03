@@ -13,7 +13,10 @@ const ChatView = ({
   emitTyping,
   handleSubmit,
   imageFile,
-  setImageFile
+  setImageFile,
+  conversationId,
+  markConversationAsRead,
+  fetchMyConversations
 }) => {
   const bottomRef = useRef(null);
 
@@ -69,6 +72,14 @@ const ChatView = ({
       setNewMessage(e.target.value);
       emitTyping();
     }}
+    onFocus={async () => {
+  if (conversationId && markConversationAsRead) {
+    await markConversationAsRead(conversationId);
+    if (fetchMyConversations) {
+      fetchMyConversations();
+    }
+  }
+}}
     placeholder="Type a message"
   />
 

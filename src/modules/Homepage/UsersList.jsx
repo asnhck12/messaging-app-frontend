@@ -51,12 +51,17 @@ function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds, mob
               <button onClick = {groupSectionOpen}>Create Group</button>
               </div>
               <div>
-                {users.map((user) => (
-                  <div
-                  key={user.id}
-                  className="userSection"
-                  onClick={() => {setSelectedUser([user]);
-                    mobileView();}}
+                {users.slice().sort((a, b) => {
+                  const aOnline = onlineUserIds.has(a.id);
+                  const bOnline = onlineUserIds.has(b.id);
+                  if (aOnline !== bOnline) return bOnline - aOnline;
+                  return a.username.toLowerCase().localeCompare(b.username.toLowerCase());
+                }).map((user) => (
+                <div
+                key={user.id}
+                className="userSection"
+                onClick={() => {setSelectedUser([user]);
+                  mobileView();}}
                   >
                     <p>
                       {user.username}{" "}

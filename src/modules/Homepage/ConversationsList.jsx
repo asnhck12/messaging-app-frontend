@@ -9,7 +9,6 @@ function ConversationsList({setSelectedConversation, setSelectedUser, mobileView
         myConversations.slice().sort((a, b) => {
           const aLast = a.messages?.[0]?.createdAt ?? a.createdAt;
           const bLast = b.messages?.[0]?.createdAt ?? b.createdAt;
-          console.log("aLast:", aLast, "bLast:", bLast);
           return new Date(bLast) - new Date(aLast);}).map((conversation) => (
           <div
             key={conversation.id}
@@ -31,8 +30,12 @@ function ConversationsList({setSelectedConversation, setSelectedUser, mobileView
                     <p key={index}>
                         {participant.user.isDeleted ? "Deleted User" : participant.user.username}
                     </p>
-                ))}
+                )
+                
+                )}
+                <div className="unread-count">{conversation._count.messages}</div>
               </div>
+              
             ) : (
               <p>No participants</p>
             )}

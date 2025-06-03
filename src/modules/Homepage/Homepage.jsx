@@ -39,7 +39,8 @@ function HomePage() {
     imageFile,
     setImageFile,
     myConversations,
-    fetchMyConversations
+    fetchMyConversations,
+    markConversationAsRead,
   } = useConversation();
 
     useSocketListeners({ conversationId, setMessages, setIsTyping, setOnlineUserIds, fetchMyConversations });
@@ -108,6 +109,9 @@ function HomePage() {
               selectedUser={selectedUser}
               imageFile={imageFile}
               setImageFile={setImageFile}
+              conversationId={conversationId}
+              markConversationAsRead={markConversationAsRead}
+              fetchMyConversations={fetchMyConversations}
             />
           </>
         ) : (
