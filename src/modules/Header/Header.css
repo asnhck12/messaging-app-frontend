@@ -2,47 +2,23 @@
     display: grid;
     grid-template-columns: 3fr 1fr;
     align-items: center;
-    margin-right: 20px;
-    margin-left: 20px;
+}
+
+h1 {
+    margin: 0;
 }
 
 .navBar {
-    display: grid;
-    grid-template-columns: 1fr 1fr 60px;
-    font-size: x-large;
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
     align-items: center;
+    justify-content: space-evenly;
 }
 
 .logo {
     text-align: left;
 }
-
-.header img {
-    width: 40px;
-    height: auto;
-}
-
-.itemsCount {
-    vertical-align: top;
-}
-
-.shoppingCart {
-    position: relative;
-    display: inline-block;
-}
-
-.itemsCount {
-    position: absolute;
-    bottom: 15px;
-    right: 1px;
-    background-color: red;
-    color: white;
-    border-radius: 50%;
-    padding: 5px 10px;
-    font-size: 12px;
-    font-weight: bold;
-
-  }
 
   a {
     color: black;
@@ -52,3 +28,4 @@
   a:active {
     color: grey;
   }
+  

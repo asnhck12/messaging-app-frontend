@@ -5,6 +5,10 @@ import { Outlet } from 'react-router-dom'
 import { useState } from 'react'
 import { isAuthenticated } from './auth/auth.js'
 import { useEffect } from 'react'
+import '@fontsource/fredoka'; // 400 by default
+import '@fontsource/fredoka/700.css'; // optional bold
+import '@fontsource/quicksand'; // 400 by default
+import '@fontsource/quicksand/600.css'; // optional semi-bold
 
 function App() {
 

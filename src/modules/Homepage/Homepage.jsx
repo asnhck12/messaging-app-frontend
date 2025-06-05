@@ -68,7 +68,9 @@ function HomePage() {
         <div className="sidePanelViewButton">
           <img src={closeIcon} onClick={mobileView} />
         </div>
-        <img onClick={contactsList} src={contactView ? chatIcon : addressBookIcon} />
+        <div className="contactOrConversationsButton">
+          <img onClick={contactsList} src={contactView ? chatIcon : addressBookIcon} />
+        </div>
         {contactView ? (
           <UsersList
             setSelectedUser={setSelectedUser}

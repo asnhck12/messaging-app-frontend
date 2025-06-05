@@ -47,7 +47,7 @@ function Header ({setLoggedIn}) {
         <>
     <div className="header">
         <div className="logo">
-        <h1><Link to='/'>Messijme</Link></h1>                   
+        <h1><Link to='/'>Natter</Link></h1>                   
             </div>
         <div className="navBar">
             {isLoggedIn ? (
@@ -58,9 +58,7 @@ function Header ({setLoggedIn}) {
                     </Link>
                 </div>
                     <div className="logoutButton">
-                        <a  href="#" onClick={handleLogout}>
-                        <img src={signouticon} />
-                        </a>
+                        <img src={signouticon} onClick={handleLogout}/>
                     </div>
                 </>
             ) : null }

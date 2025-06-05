@@ -4,7 +4,7 @@ function ConversationsList({setSelectedConversation, setSelectedUser, mobileView
         
     return (
   <div className="conversationsList">
-    <div>
+    <div className="conversations">
       {myConversations.length > 0 ? (
         myConversations.slice().sort((a, b) => {
           const aLast = a.messages?.[0]?.createdAt ?? a.createdAt;
@@ -27,13 +27,16 @@ function ConversationsList({setSelectedConversation, setSelectedUser, mobileView
             ) : Array.isArray(conversation.participants) ? (
               <div className="participants">
                 {conversation.participants.map((participant, index) => (
+                  <div className="participantName">
                     <p key={index}>
-                        {participant.user.isDeleted ? "Deleted User" : participant.user.username}
-                    </p>
+                      <span style={{ fontWeight: conversation._count.messages > 0 ? 'bold' : 'normal', color: "green" }}>
+                        {participant.user.isDeleted ? 'Deleted User' : participant.user.username}
+                        {conversation._count.messages > 0 ? ` (${conversation._count.messages})` : ''}</span>{" "}
+                        </p>
+                    </div>
                 )
                 
                 )}
-                <div className="unread-count">{conversation._count.messages}</div>
               </div>
               
             ) : (

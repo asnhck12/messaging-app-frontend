@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchWithAuth } from "../../utils/api";
+import addgroupicon from '../../assets/images/newgroupicon.svg';
 const API_URL = import.meta.env.VITE_API_URL;
 
 function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds, mobileView }) {
@@ -48,9 +49,9 @@ function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds, mob
           {!createGroup ? (
             <>
             <div className="groupCreateButton">
-              <button onClick = {groupSectionOpen}>Create Group</button>
+              <img src= {addgroupicon} onClick = {groupSectionOpen}/>
               </div>
-              <div>
+              <div className="users">
                 {users.slice().sort((a, b) => {
                   const aOnline = onlineUserIds.has(a.id);
                   const bOnline = onlineUserIds.has(b.id);

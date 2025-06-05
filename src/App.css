@@ -1,22 +1,35 @@
 #root {
-  min-height: 100vh;
+  min-height: 100dvh;
   text-align: center;
   display: grid;
   width: 100%
 }
 
-body {
+/* html, body {
   margin: 0;
+  padding: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100dvh;
+  flex-direction: column;
+  height: 100%;
+
+} */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .fullDisplay {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   margin-left: 30px;
   margin-right: 30px;
 }
@@ -27,4 +40,17 @@ form {
   width: min-content;
   align-items: center;
   gap: 5px;
+}
+
+h1, h2 {
+  font-family: 'Fredoka', sans-serif;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+}
+
+img {
+    height: 30px;
+    display: block;
 }

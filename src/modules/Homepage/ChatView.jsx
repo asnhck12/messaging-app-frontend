@@ -39,6 +39,7 @@ const ChatView = ({
             : "sender")
           }
         >
+          <div className="messageBubble">
           <p>
             {message.sender?.isDeleted ? "Deleted User" : message.sender?.username}:{" "}
             {message.content}
@@ -49,9 +50,9 @@ const ChatView = ({
         alt="sent media"
         style={{ maxWidth: "200px", borderRadius: "8px", marginTop: "4px" }}
       />
-    )}
-        
-        </div>
+      )}
+      </div>
+      </div>
       ))}
 
       <div ref={bottomRef} />
