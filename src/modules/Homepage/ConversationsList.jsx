@@ -1,4 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL;
+import profileicon from "../../assets/images/profileicon.svg";
+
 
 function ConversationsList({setSelectedConversation, setSelectedUser, mobileView, myConversations}) {
         
@@ -27,13 +29,17 @@ function ConversationsList({setSelectedConversation, setSelectedUser, mobileView
             ) : Array.isArray(conversation.participants) ? (
               <div className="participants">
                 {conversation.participants.map((participant, index) => (
+                  <>
                   <div className="participantName">
-                    <p key={index}>
-                      <span style={{ fontWeight: conversation._count.messages > 0 ? 'bold' : 'normal', color: "green" }}>
-                        {participant.user.isDeleted ? 'Deleted User' : participant.user.username}
-                        {conversation._count.messages > 0 ? ` (${conversation._count.messages})` : ''}</span>{" "}
-                        </p>
+                    <div className="participantsIcon">
+                    <img src={profileicon}/>
                     </div>
+                    <div className="participantDetails" style={{ fontWeight: conversation._count.messages > 0 ? 'bold' : 'normal' }} key={index}>
+                        <p>{participant.user.isDeleted ? 'Deleted User' : participant.user.username}</p>
+                        {conversation._count.messages > 0 && (<p className="unreadCount">{conversation._count.messages}</p>
+                      )}</div>
+                    </div>
+                    </>
                 )
                 
                 )}

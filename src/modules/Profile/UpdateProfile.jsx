@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchWithAuth } from "../../utils/api";
+import './UpdateProfile.css';
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 function UpdateProfile() {

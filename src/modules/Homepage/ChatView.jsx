@@ -40,8 +40,10 @@ const ChatView = ({
           }
         >
           <div className="messageBubble">
+          <p className="chatUserName">
+            {message.sender?.isDeleted ? "Deleted User" : message.sender?.username}
+          </p>
           <p>
-            {message.sender?.isDeleted ? "Deleted User" : message.sender?.username}:{" "}
             {message.content}
           </p>
           {message.imageUrl && (
@@ -63,7 +65,7 @@ const ChatView = ({
           {selectedUser[0]?.username} is typing...
         </p>
       )}
-
+  <div className="messageSubmission">
       <form onSubmit={handleSubmit}>
   <input
     type="text"
@@ -99,6 +101,7 @@ const ChatView = ({
   <img src={sendIcon} style={{ cursor: 'pointer' }} />
 </button>
 </form>
+</div>
     </div>
   );
 };

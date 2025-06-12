@@ -1,6 +1,7 @@
 import {  useEffect, useState } from "react";
 import { fetchWithAuth } from "../../utils/api";
 import { useParams } from "react-router-dom";
+import './Profile.css';
 const API_URL = import.meta.env.VITE_API_URL;
 
 

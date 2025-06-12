@@ -11,14 +11,13 @@ import ChatView from "./ChatView";
 import closeIcon from "../../assets/images/closeicon.svg";
 import addressBookIcon from "../../assets/images/addressbookicon.svg";
 import chatIcon from "../../assets/images/chaticon.svg";
-import menuIcon from "../../assets/images/menuicon.svg";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function HomePage() {
     const [contactView, setContactView] = useState(false);
     const isLoggedIn = isAuthenticated();
-    const [messageView, setMessageView] = useState(false);
+    const [messageView, setMessageView] = useState(true);
       const {
     messages,
     setMessages,
@@ -65,9 +64,9 @@ function HomePage() {
     return (
     <div className="mainSection">
       <div className={`sidePanel ${messageView ? '' : 'viewOn'}`}>
-        <div className="sidePanelViewButton">
+        {/* <div className="sidePanelViewButton">
           <img src={closeIcon} onClick={mobileView} />
-        </div>
+        </div> */}
         <div className="contactOrConversationsButton">
           <img onClick={contactsList} src={contactView ? chatIcon : addressBookIcon} />
         </div>
@@ -91,15 +90,16 @@ function HomePage() {
         )}
       </div>
       <div className={`messageView ${messageView ? 'viewOn' : ''}`}>
-        <div className="messagePanelViewButton">
-          <img src={menuIcon} onClick={mobileView} />
-        </div>
+        {/* <div className="messagePanelViewButton">
+          <img src={backIcon} onClick={mobileView} />
+        </div> */}
         {conversationId ? (
           <>
             <ChatHeader
               groupName={groupName}
               selectedUser={selectedUser}
               onlineUserIds={onlineUserIds}
+              mobileView={mobileView}
             />
             <ChatView
               messages={messages}
@@ -117,7 +117,7 @@ function HomePage() {
             />
           </>
         ) : (
-          <p>No user selected</p>
+          <p>No conversation selected</p>
         )}
       </div>
     </div>

@@ -1,8 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import backIcon from "../../assets/images/backicon.svg";
 
-const ChatHeader = ({ groupName, selectedUser, onlineUserIds }) => {
+const ChatHeader = ({ groupName, selectedUser, onlineUserIds, mobileView }) => {
   return (
+    <>
+    <div className="chatHeader">
+    <div className="messagePanelViewButton">
+          <img src={backIcon} onClick={mobileView} />
+        </div>
     <div className="messageTitle">
       {groupName && <h3>{groupName}</h3>}
 
@@ -20,6 +26,8 @@ const ChatHeader = ({ groupName, selectedUser, onlineUserIds }) => {
             </span>
         ))}
     </div>
+    </div>
+    </>
   );
 };
 

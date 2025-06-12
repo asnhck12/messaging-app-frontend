@@ -65,10 +65,11 @@ function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds, mob
                   mobileView();}}
                   >
                     <p>
-                      {user.username}{" "}
                       <span style={{ color: onlineUserIds.has(user.id) ? "green" : "gray" }}>
-                        ● {onlineUserIds.has(user.id) ? "Online" : "Offline"}
-                      </span>
+                        ● 
+                        {/* {onlineUserIds.has(user.id) ? "Online" : "Offline"} */}
+                      </span> {" "}
+                      {user.username}
                     </p>
                   </div>
                 ))}

@@ -4,9 +4,9 @@ md	@media (min-width: 768px)	≥ 768px
 lg	@media (min-width: 1024px)	≥ 1024px
 xl	@media (min-width: 1280px)	≥ 1280px */
 
-* {
+/* * {
   outline: 1px solid red;
-}
+} */
 
 /* html, body {
   height: 100%;
@@ -17,17 +17,28 @@ xl	@media (min-width: 1280px)	≥ 1280px */
   width: 100%;
 } */
 
+p {
+    font-size: x-large;
+}
+
 body > .mainSection {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .mainSection {
     display: flex;
-    flex-direction: column;
-    min-height: 100dvh;
+    flex-direction: row;
     overflow: hidden;
+    flex: 1;
+}
+
+.chatHeader {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
 }
 
 .sidePanel {
@@ -35,6 +46,7 @@ body > .mainSection {
     flex-direction: column;
     flex: 1;
     overflow: hidden;
+    padding: 5px;
 }
 
 .conversations {
@@ -42,7 +54,6 @@ body > .mainSection {
 }
 
 .usersList, .conversationsList {
-    width: 25%;
     display: flex;
     flex-flow: column;
     align-items: center;
@@ -51,16 +62,21 @@ body > .mainSection {
 }
 
 .messageView {
-    width: 75%;
+    width: 70%;
     display: flex;
     align-items: center;
-    flex: 1;
     flex-direction: column;
-    overflow: hidden;
+    gap: 10px;
 }
 
 .participantName {
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .messageTitle, .chatView {
@@ -72,6 +88,7 @@ body > .mainSection {
     flex-direction: column;
     flex: 1;
     overflow: hidden;
+    outline: 1px solid black;
 }
 
 .messageTitle {
@@ -92,20 +109,43 @@ body > .mainSection {
 
 .messageBubble {
     border-radius: 20px;
-    padding: 1px 9px;
+    padding: 5px 9px;
+    overflow-wrap: anywhere;
+    min-width: 80px;
+  
+  display: flex;
+  flex-direction: column;
+}
+
+.messageBubble p {
+    margin: 0;
 }
 
 .sender > .messageBubble {
     background-color: #DCF8C6;
+    align-items: flex-end;
 }
 
 .recipient > .messageBubble {
     background-color: #E6F0FF;
+        align-items: flex-start;
 }
 
 .messageTitle > span {
     gap: 9px;
     display: flex;
+}
+
+.chatUserName {
+    font-weight: bolder;
+    color: darkblue;
+}
+
+.participantDetails {
+    display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .chatMessagesView {
@@ -114,6 +154,30 @@ body > .mainSection {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.messagePanelViewButton {
+        height: 100%;
+        align-content: center;
+    }
+
+.unreadCount {
+    background-color: greenyellow;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    align-content: center;
+    justify-content: center;
+    display: grid;
+}
+
+.participantsIcon {
+    outline: 1px solid  black ;
+    border-radius: 50%;
+    overflow: hidden;
+  align-content: center;
+  justify-content: center;
+  display: grid;
 
 }
 
@@ -138,8 +202,22 @@ body > .mainSection {
 
 }
 
+.messagePanelViewButton img {
+    height: 20px;
+
+}
+
 .messageSection {
-    gap: 10px;
+    padding: 10px;
+}
+
+.messageSubmission {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.users, .conversationsList {
+    overflow: scroll;
 }
 
 @media (max-width: 640px){
@@ -155,7 +233,7 @@ body > .mainSection {
         align-self: flex-start;
     }
 
-    .viewOn {
+    .viewOn, .gitHubText {
         display: none;
     }
 
