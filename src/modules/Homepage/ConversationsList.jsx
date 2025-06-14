@@ -2,7 +2,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 import profileicon from "../../assets/images/profileicon.svg";
 
 
-function ConversationsList({setSelectedConversation, setSelectedUser, mobileView, myConversations}) {
+function ConversationsList({setSelectedConversation, selectedConversation, setSelectedUser, onlineUserIds, mobileView, myConversations}) {
         
     return (
   <div className="conversationsList">
@@ -15,7 +15,7 @@ function ConversationsList({setSelectedConversation, setSelectedUser, mobileView
           <div
             key={conversation.id}
             id={conversation.id}
-            className="conversationSection"
+            className={`conversationSection ${selectedConversation === conversation.id ? "selectedUser" : ""}`}
             onClick={() => {
               setSelectedConversation(conversation.id);
               setSelectedUser(conversation.participants.map(p => p.user ?? { id: null, username: "Deleted User"}));
@@ -31,9 +31,9 @@ function ConversationsList({setSelectedConversation, setSelectedUser, mobileView
                 {conversation.participants.map((participant, index) => (
                   <>
                   <div className="participantName">
-                    <div className="participantsIcon">
-                    <img src={profileicon}/>
-                    </div>
+                   <div className={`participantsIconUsers ${onlineUserIds.has(participant.user.id) ? "userOnline" : "userOffline"}`}>
+                                         <img src={profileicon}/>
+                                       </div>
                     <div className="participantDetails" style={{ fontWeight: conversation._count.messages > 0 ? 'bold' : 'normal' }} key={index}>
                         <p>{participant.user.isDeleted ? 'Deleted User' : participant.user.username}</p>
                         {conversation._count.messages > 0 && (<p className="unreadCount">{conversation._count.messages}</p>

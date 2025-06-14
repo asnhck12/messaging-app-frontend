@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { fetchWithAuth } from "../../utils/api";
 import addgroupicon from '../../assets/images/newgroupicon.svg';
+import profileicon from "../../assets/images/profileicon.svg";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds, mobileView }) {
@@ -64,14 +66,15 @@ function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds, mob
                 onClick={() => {setSelectedUser([user]);
                   mobileView();}}
                   >
-                    <p>
-                      <span style={{ color: onlineUserIds.has(user.id) ? "green" : "gray" }}>
-                        ● 
-                        {/* {onlineUserIds.has(user.id) ? "Online" : "Offline"} */}
-                      </span> {" "}
-                      {user.username}
-                    </p>
-                  </div>
+                    <div className="user">
+                    <div className={`participantsIconUsers ${onlineUserIds.has(user.id) ? "userOnline" : "userOffline"}`}>
+                      <img src={profileicon}/>
+                    </div>
+                    <div className="userDetails">
+                      <p>{user.username}</p>
+                      </div>
+                      </div>
+                    </div>
                 ))}
                 </div>
                 </> ) : (

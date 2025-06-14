@@ -39,6 +39,12 @@ body > .mainSection {
     display: flex;
     flex-direction: row;
     gap: 15px;
+    box-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.3);;
+    z-index: 1;
+}
+
+.contactOrConversationsButton img {
+    height: 30px;
 }
 
 .sidePanel {
@@ -47,18 +53,25 @@ body > .mainSection {
     flex: 1;
     overflow: hidden;
     padding: 5px;
+    background-color: #e6e6e9;
 }
 
-.conversations {
+.conversations, .users, .participantName {
     width: 100%;
+}
+
+.selectedUser {
+    background-color: white;
 }
 
 .usersList, .conversationsList {
     display: flex;
     flex-flow: column;
-    align-items: center;
     flex: 1;
     overflow: auto;
+    gap: 15px;
+    overflow: scroll;
+    padding-top: 10px;
 }
 
 .messageView {
@@ -66,17 +79,22 @@ body > .mainSection {
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 10px;
+    background-color: #f5f3f4;;
 }
 
-.participantName {
-    width: 100%;
+.userOnline {
+  /* box-shadow: 0 0 0 4px green; */
+    box-shadow: 0 0 3px 5px rgba(0, 128, 0, 0.5); /* green with fade */
+
+}
+
+.participantName, .user {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 15px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 5px;
+    padding-left: 10px;
 }
 
 .messageTitle, .chatView {
@@ -88,11 +106,12 @@ body > .mainSection {
     flex-direction: column;
     flex: 1;
     overflow: hidden;
-    outline: 1px solid black;
 }
 
 .messageTitle {
     text-align: start;
+    padding-left: 10px;
+    font-size: larger;
 }
 
 .recipient {
@@ -112,9 +131,8 @@ body > .mainSection {
     padding: 5px 9px;
     overflow-wrap: anywhere;
     min-width: 80px;
-  
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .messageBubble p {
@@ -128,7 +146,7 @@ body > .mainSection {
 
 .recipient > .messageBubble {
     background-color: #E6F0FF;
-        align-items: flex-start;
+    align-items: flex-start;
 }
 
 .messageTitle > span {
@@ -141,11 +159,16 @@ body > .mainSection {
     color: darkblue;
 }
 
-.participantDetails {
+.sidePanel p {
+    margin: 0;
+}
+
+.participantDetails, .userDetails {
     display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 1;
+    align-items: center;
 }
 
 .chatMessagesView {
@@ -171,13 +194,13 @@ body > .mainSection {
     display: grid;
 }
 
-.participantsIcon {
-    outline: 1px solid  black ;
+.participantsIcon, .participantsIconUsers {
+    outline: 2px solid  black ;
     border-radius: 50%;
     overflow: hidden;
-  align-content: center;
-  justify-content: center;
-  display: grid;
+    align-content: center;
+    justify-content: center;
+    display: grid;
 
 }
 
@@ -209,23 +232,34 @@ body > .mainSection {
 
 .messageSection {
     padding: 10px;
+    background-color: #f5f3f4;
 }
 
 .messageSubmission {
     margin-left: 5px;
     margin-right: 5px;
+    margin-bottom: 5px;
 }
 
-.users, .conversationsList {
-    overflow: scroll;
+.usersList, .conversationsList {
+ 
 }
+
+.groupCreateButton {
+        align-self: flex-end;
+    }
+
+.groupCreateButton img {
+    height: 40px;
+}
+    
 
 @media (max-width: 640px){
     .sidePanelViewButton, .messagePanelViewButton {
         display: block;
     }
 
-    .sidePanelViewButton, .groupCreateButton {
+    .sidePanelViewButton {
         align-self: flex-end;
     }
 

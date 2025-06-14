@@ -8,7 +8,7 @@ import useConversation from "../../hooks/useConversation";
 import useSocketListeners from "../../hooks/useSockets";
 import ChatHeader from "./ChatHeader";
 import ChatView from "./ChatView";
-import closeIcon from "../../assets/images/closeicon.svg";
+// import closeIcon from "../../assets/images/closeicon.svg";
 import addressBookIcon from "../../assets/images/addressbookicon.svg";
 import chatIcon from "../../assets/images/chaticon.svg";
 
@@ -27,6 +27,7 @@ function HomePage() {
     setSelectedUser,
     conversationId,
     setSelectedConversation,
+    selectedConversation,
     groupName,
     setGroupName,
     onlineUserIds,
@@ -83,7 +84,9 @@ function HomePage() {
           <ConversationsList
             setSelectedConversation={setSelectedConversation}
             setSelectedUser={setSelectedUser}
+            selectedConversation={selectedConversation}
             setGroupName={setGroupName}
+            onlineUserIds={onlineUserIds}
             mobileView={mobileView}
             myConversations={myConversations}
           />
