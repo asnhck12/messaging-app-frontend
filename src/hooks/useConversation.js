@@ -15,6 +15,7 @@ const useConversation = () => {
   const [isTyping, setIsTyping] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [myConversations, setMyConversations] = useState([]);
+  const [messageView, setMessageView] = useState(true);
 
   const typingTimeOutRef = useRef(null);
 
@@ -24,12 +25,6 @@ const useConversation = () => {
       connectSocket();
     }
   }, []);
-
-  useEffect(() => {
-    if (selectedUser.length > 0) {
-      fetchConversation({ selectedUser, groupName });
-    }
-  }, [selectedUser]);
 
   useEffect(() => {
     if (selectedConversation) {
@@ -49,7 +44,7 @@ const useConversation = () => {
     }, 2000);
   };
 
-  const fetchConversation = async ({ selectedUser, selectedConversation, groupName }) => {
+  const fetchConversation = async ({ selectedUser, selectedConversation, groupName, content, imageUrl }) => {
     try {
       if (selectedUser?.length > 0) {
         const response = await fetchWithAuth(`${API_URL}/conversations/findOrCreate`, {
@@ -58,24 +53,34 @@ const useConversation = () => {
           body: JSON.stringify({
             selectedUser: selectedUser.map((user) => user.id),
             groupName: groupName || null,
+            content: content || null,
+            imageUrl: imageUrl || null,
           }),
         });
 
         if (!response.ok) throw new Error("Failed to fetch or create conversation.");
 
         const data = await response.json();
+        const conversation = data.conversation;
+
+        if (!conversation) {
+          return null;
+        }
+
         const conversationId = data.conversation?.id;
 
         if (conversationId) {
           setConversationId(conversationId);
           fetchMessages(conversationId);
           setGroupName(data.conversation?.name || "");
+          return conversationId;
         } else {
           throw new Error("Conversation ID missing in response.");
         }
       } else if (selectedConversation) {
         setConversationId(selectedConversation);
         fetchMessages(selectedConversation);
+        return selectedConversation;
       } else {
         throw new Error("No selected user or conversation ID provided.");
       }
@@ -119,12 +124,40 @@ const useConversation = () => {
     }
   };
 
+  const handleCreateGroup = (users, name) => {
+  if (users.length > 1 && name) {
+    setSelectedUser(users);
+    setGroupName(name);
+    fetchConversation({ selectedUser: users, groupName: name });
+  } else {
+    alert("Please select at least 2 members and enter a group name.");
+  }
+};
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!conversationId) return;
+     let convId = conversationId;
+     
+     if (!convId && !groupName) {
+      console.log("no convid or group");
+      const result = await fetchConversation({ 
+        selectedUser,
+        content: newMessage,
+        imageUrl: imageFile ? "dummy" : null
+       });
 
+      console.log("result: ", result);
+
+    convId = result || conversationId;
+
+    if (!convId) {
+      console.warn("No valid conversation ID, aborting message send.");
+      return;
+    }
+  }
     const formData = new FormData();
-    formData.append("conversationId", conversationId);
+    formData.append("conversationId", convId);
     if (newMessage) formData.append("content", newMessage);
     if (imageFile) formData.append("image", imageFile);
 
@@ -139,6 +172,7 @@ const useConversation = () => {
       setNewMessage("");
       setImageFile(null);
       fetchMyConversations();
+      setMessageView(true);
     } catch (error) {
       console.error("Error submitting message:", error);
     }
@@ -168,6 +202,7 @@ const useConversation = () => {
     selectedUser,
     setSelectedUser,
     conversationId,
+    setConversationId,
     selectedConversation,
     setSelectedConversation,
     groupName,
@@ -182,7 +217,11 @@ const useConversation = () => {
     setImageFile,
     fetchMyConversations,
     myConversations,
-    markConversationAsRead
+    markConversationAsRead,
+    handleCreateGroup,
+    setMessageView,
+    messageView,
+    fetchConversation
   };
 };
 

@@ -17,7 +17,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 function HomePage() {
     const [contactView, setContactView] = useState(false);
     const isLoggedIn = isAuthenticated();
-    const [messageView, setMessageView] = useState(true);
       const {
     messages,
     setMessages,
@@ -26,6 +25,7 @@ function HomePage() {
     selectedUser,
     setSelectedUser,
     conversationId,
+    setConversationId,
     setSelectedConversation,
     selectedConversation,
     groupName,
@@ -41,6 +41,10 @@ function HomePage() {
     myConversations,
     fetchMyConversations,
     markConversationAsRead,
+    handleCreateGroup,
+    messageView,
+    setMessageView,
+    fetchConversation
   } = useConversation();
 
     useSocketListeners({ conversationId, setMessages, setIsTyping, setOnlineUserIds, fetchMyConversations });
@@ -65,20 +69,22 @@ function HomePage() {
     return (
     <div className="mainSection">
       <div className={`sidePanel ${messageView ? '' : 'viewOn'}`}>
-        {/* <div className="sidePanelViewButton">
-          <img src={closeIcon} onClick={mobileView} />
-        </div> */}
         <div className="contactOrConversationsButton">
           <img onClick={contactsList} src={contactView ? chatIcon : addressBookIcon} />
         </div>
         {contactView ? (
           <UsersList
             setSelectedUser={setSelectedUser}
-            groupName={groupName}
             setGroupName={setGroupName}
             onlineUserIds={onlineUserIds}
             setOnlineUserIds={setOnlineUserIds}
             mobileView={mobileView}
+            handleCreateGroup={handleCreateGroup}
+            fetchConversation={fetchConversation}
+            selectedUser={selectedUser}
+            setSelectedConversation={setSelectedConversation}
+            setMessages={setMessages}
+            setConversationId={setConversationId}
           />
         ) : (
           <ConversationsList
@@ -93,10 +99,7 @@ function HomePage() {
         )}
       </div>
       <div className={`messageView ${messageView ? 'viewOn' : ''}`}>
-        {/* <div className="messagePanelViewButton">
-          <img src={backIcon} onClick={mobileView} />
-        </div> */}
-        {conversationId ? (
+        {selectedUser || selectedConversation ? (
           <>
             <ChatHeader
               groupName={groupName}

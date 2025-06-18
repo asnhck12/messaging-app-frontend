@@ -5,10 +5,11 @@ import profileicon from "../../assets/images/profileicon.svg";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds, mobileView }) {
+function UsersList({setSelectedUser, onlineUserIds, mobileView, handleCreateGroup, fetchConversation, setSelectedConversation, setMessages, setConversationId }) {
   const [users, setUsers] = useState([]);
   const [createGroup, setCreateGroup] = useState(null);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [groupNameInput, setGroupNameInput] = useState("");
 
   const groupSectionOpen = () => {
           setCreateGroup(true)
@@ -63,8 +64,23 @@ function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds, mob
                 <div
                 key={user.id}
                 className="userSection"
-                onClick={() => {setSelectedUser([user]);
-                  mobileView();}}
+                onClick={async () => {
+                   const selected = [user];
+                   
+                   setSelectedUser([]);
+                   setSelectedConversation("");
+                   setMessages([]);
+                   
+                   setSelectedUser(selected);
+                   
+                   const convoId = await fetchConversation({ selectedUser: selected });
+                   
+                   if (!convoId) {
+                    setConversationId("");
+                    setMessages([]);
+  }
+                  mobileView();
+}}
                   >
                     <div className="user">
                     <div className={`participantsIconUsers ${onlineUserIds.has(user.id) ? "userOnline" : "userOffline"}`}>
@@ -85,8 +101,8 @@ function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds, mob
         <input
           type="text"
           id="groupName"
-          value={groupName}
-          onChange={(e) => setGroupName(e.target.value)}
+          value={groupNameInput}
+          onChange={(e) => setGroupNameInput(e.target.value)}
           required
         />
       </div>
@@ -116,9 +132,9 @@ function UsersList({setSelectedUser, groupName, setGroupName, onlineUserIds, mob
                 
                 <div className="closeGroupCreateButton">
                     <button onClick={() => { 
-                      setSelectedUser(selectedUsers);
-                      mobileView();
-                      groupSectionClose();
+                        handleCreateGroup(selectedUsers, groupNameInput);
+                        mobileView();
+                        groupSectionClose();
                       }}>Create</button>
                 </div>
                 <div className="closeGroupCreateButton">
