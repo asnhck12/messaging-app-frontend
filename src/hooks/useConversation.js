@@ -143,7 +143,6 @@ const useConversation = () => {
      let convId = conversationId;
      
      if (!convId && !groupName) {
-      console.log("no convid or group");
       const result = await fetchConversation({ 
         selectedUser,
         content: newMessage,
