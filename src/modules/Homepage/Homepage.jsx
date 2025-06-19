@@ -1,4 +1,3 @@
-import { useState } from "react";
 import './Homepage.css';
 import UsersList from "./UsersList";
 import { isAuthenticated } from "../../auth/auth";
@@ -8,14 +7,12 @@ import useConversation from "../../hooks/useConversation";
 import useSocketListeners from "../../hooks/useSockets";
 import ChatHeader from "./ChatHeader";
 import ChatView from "./ChatView";
-// import closeIcon from "../../assets/images/closeicon.svg";
 import addressBookIcon from "../../assets/images/addressbookicon.svg";
 import chatIcon from "../../assets/images/chaticon.svg";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function HomePage() {
-    const [contactView, setContactView] = useState(false);
     const isLoggedIn = isAuthenticated();
       const {
     messages,
@@ -27,6 +24,8 @@ function HomePage() {
     conversationId,
     setConversationId,
     setSelectedConversation,
+    setContactView,
+    contactView,
     selectedConversation,
     groupName,
     setGroupName,
@@ -55,6 +54,9 @@ function HomePage() {
         }
 
         if (!isLoggedIn) return <Navigate to="/login" replace />
+
+        console.log("selected conversation: ", selectedConversation)
+        console.log("selected conversationID: ", conversationId)
 
     
     const mobileView = () => {

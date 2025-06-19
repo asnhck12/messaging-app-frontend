@@ -16,6 +16,7 @@ const useConversation = () => {
   const [imageFile, setImageFile] = useState(null);
   const [myConversations, setMyConversations] = useState([]);
   const [messageView, setMessageView] = useState(true);
+  const [contactView, setContactView] = useState(false);
 
   const typingTimeOutRef = useRef(null);
 
@@ -71,8 +72,10 @@ const useConversation = () => {
 
         if (conversationId) {
           setConversationId(conversationId);
+          setSelectedConversation(conversationId);
           fetchMessages(conversationId);
           setGroupName(data.conversation?.name || "");
+          setContactView(false);
           return conversationId;
         } else {
           throw new Error("Conversation ID missing in response.");
@@ -147,9 +150,9 @@ const useConversation = () => {
         imageUrl: imageFile ? "dummy" : null
        });
 
-      console.log("result: ", result);
-
     convId = result || conversationId;
+    setSelectedConversation(result);
+    setContactView(false);
 
     if (!convId) {
       console.warn("No valid conversation ID, aborting message send.");
@@ -172,7 +175,6 @@ const useConversation = () => {
       setNewMessage("");
       setImageFile(null);
       fetchMyConversations();
-      setMessageView(true);
     } catch (error) {
       console.error("Error submitting message:", error);
     }
@@ -203,6 +205,8 @@ const useConversation = () => {
     setSelectedUser,
     conversationId,
     setConversationId,
+    setContactView,
+    contactView,
     selectedConversation,
     setSelectedConversation,
     groupName,
