@@ -54,10 +54,6 @@ function HomePage() {
         }
 
         if (!isLoggedIn) return <Navigate to="/login" replace />
-
-        console.log("selected conversation: ", selectedConversation)
-        console.log("selected conversationID: ", conversationId)
-
     
     const mobileView = () => {
       if (messageView) {

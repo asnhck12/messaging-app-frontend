@@ -185,7 +185,6 @@ const useConversation = () => {
                 const response = await fetchWithAuth(`${API_URL}/conversations/find`);
                 const data = await response.json();
                 setMyConversations([...data.conversations]);
-                console.log("data convs: ", data);
             } catch (error) {
                 console.error("Error fetching conversations:", error);
             }
