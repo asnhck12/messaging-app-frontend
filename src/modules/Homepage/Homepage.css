@@ -201,6 +201,7 @@ body > .mainSection {
     align-content: center;
     justify-content: center;
     display: grid;
+    min-width: 25px;
 
 }
 

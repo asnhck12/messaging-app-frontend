@@ -1,5 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL;
 import profileicon from "../../assets/images/profileicon.svg";
+import profilegroupicon from "../../assets/images/profilegroupicon.svg";
 
 
 function ConversationsList({setSelectedConversation, selectedConversation, setSelectedUser, onlineUserIds, mobileView, myConversations, setGroupName}) {
@@ -33,7 +34,26 @@ function ConversationsList({setSelectedConversation, selectedConversation, setSe
             >
               {conversation.isGroup ? (
                 <div className="participants">
-                  <p>{conversation.name}</p>
+                  <div className="participantName">
+                    <div className="participantsIconUsers">
+                        <img src={profilegroupicon} />
+                      </div>
+                      <div
+                        className="participantDetails"
+                        style={{
+                          fontWeight:
+                            conversation._count.messages > 0 ? "bold" : "normal",
+                        }}
+                      >
+                    <p>
+                          {conversation.name}
+                        </p>
+                        {conversation._count.messages > 0 && (
+                          <p className="unreadCount">
+                            {conversation._count.messages}
+                          </p>)}
+                    </div>
+                  </div>
                 </div>
               ) : Array.isArray(conversation.participants) ? (
                 <div className="participants">
