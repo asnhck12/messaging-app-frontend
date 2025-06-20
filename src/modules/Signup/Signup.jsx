@@ -8,11 +8,13 @@ function SignupPage () {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMessage("");
 
         const signUpData = {
             username: username,
@@ -21,27 +23,34 @@ function SignupPage () {
         };
 
         try {
-            const response = await fetch(`${API_URL}/users/signup`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(signUpData)
-            });
+      const response = await fetch(`${API_URL}/users/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(signUpData),
+      });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error("Signup error from server:", errorData);
-                throw new Error('Failed to submit Signup form');
-            }
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Signup error from server:", errorData);
+
+        if (errorData.errors && errorData.errors.length > 0) {
+          setErrorMessage(errorData.errors[0].msg);
+        } else if (errorData.message) {
+          setErrorMessage(errorData.message);
+        } else {
+          setErrorMessage("Signup failed. Please try again.");
+        }
+        return;
+      }
 
             const result = await response.json();
             console.log('Sign up submitted successfully:', result);
 
-            // Clear form fields
             setUsername('');
             setPassword('');
             setConfirmPassword('');
+            setErrorMessage('');
+
 
             navigate('/login');
         } catch (error) {
@@ -61,6 +70,11 @@ function SignupPage () {
                 <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
                 <label htmlFor="confirm_password">Confirm Password</label>
                 <input type="password" name="confirm_password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required/>
+                {errorMessage && (
+                    <div className="error-message" style={{ color: 'red', marginTop: '10px' }}>
+                {errorMessage}
+              </div>
+            )}
                 <button type="submit">Sign Up</button>
             </div>
             <div className="homePageButton">
