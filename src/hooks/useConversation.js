@@ -17,6 +17,30 @@ const useConversation = () => {
   const [myConversations, setMyConversations] = useState([]);
   const [messageView, setMessageView] = useState(true);
   const [contactView, setContactView] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [surName, setSurName] = useState("");
+  const [summary, setSummary] = useState("");
+  const [profileComplete, setProfileComplete] = useState(false);
+  
+  useEffect(() => {
+      const fetchMyProfile = async () => {
+        try {
+          const response = await fetchWithAuth(`${API_URL}/profile/myProfile`);
+          const data = await response.json();
+          const first = data.firstName || "";
+          const last = data.surName || "";
+          const summary = data.profileSummary || "";
+
+          setFirstName(first);
+          setSurName(last);
+          setSummary(summary);
+          setProfileComplete(!!(first && last));
+          } catch (error) {
+              console.error("Failed to fetch profile data:", error);
+          }
+      };
+      fetchMyProfile();
+  }, []);
 
   const typingTimeOutRef = useRef(null);
 
@@ -223,7 +247,14 @@ const useConversation = () => {
     handleCreateGroup,
     setMessageView,
     messageView,
-    fetchConversation
+    fetchConversation,
+    firstName, 
+    setFirstName,
+    surName, 
+    setSurName,
+    summary, 
+    setSummary,
+    profileComplete
   };
 };
 

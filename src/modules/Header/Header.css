@@ -28,4 +28,19 @@ h1 {
   a:active {
     color: grey;
   }
+
+  .updateProfile {
+    outline: 2px solid  black ;
+    border-radius: 50%;
+    overflow: hidden;
+    align-content: center;
+    justify-content: center;
+    display: grid;
+    min-width: 25px;
+
+  }
   
+  .profileIncomplete {
+        box-shadow: 0 0 1px 5px rgba(228, 53, 9, 0.5);
+
+  }

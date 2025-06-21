@@ -2,12 +2,18 @@ import { useState } from "react";
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import socket from "../../utils/socket";
+import { fetchWithAuth } from "../../utils/api";
+// import useConversation from "../../hooks/useConversation";
+import { useOutletContext } from 'react-router-dom';
 const API_URL = import.meta.env.VITE_API_URL;
 
 function LoginPage () {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState(""); 
+    const [errorMessage, setErrorMessage] = useState("");
+    const { setCompletedProfile } = useOutletContext();
+    // const {profileComplete
+    // } = useConversation();
 
     const navigate = useNavigate();
 
@@ -34,8 +40,8 @@ function LoginPage () {
                     setErrorMessage("This account has been deleted. Please contact support or create a new account.");
                 } else {
                     setErrorMessage(result.message || "Failed to log in.");
-    }
-    return;
+                }
+                return;
 }
 
             const result = await response.json();
@@ -48,13 +54,34 @@ function LoginPage () {
             setUsername('');
             setPassword('');
             setErrorMessage('');
-
-            navigate('/');
             
-        } catch (error) {
-            console.error('Error submitting post:', error);
-        }
-    };
+            try {
+                const profileResponse = await fetchWithAuth(`${API_URL}/profile/myProfile`);   
+                if (!profileResponse.ok) {
+                    throw new Error("Failed to fetch profile");
+                }                
+                const profile = await profileResponse.json();
+
+                const first = profile.firstName || "";
+                const last = profile.surName || "";
+                
+                if (!first || !last) {
+                    navigate("/update");
+                    setCompletedProfile(false);
+                    
+                } else {
+                        navigate("/");
+                        setCompletedProfile(true);
+                    }
+                
+                } catch (profileError) {
+                    console.error("Error checking profile:", profileError);
+                    navigate("/");
+                
+                }} catch (error) {
+                    console.error('Error submitting post:', error);
+                }
+            };
 
     const handleGuestLogin = async () => {
         try {
