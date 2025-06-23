@@ -63,9 +63,8 @@ function HomePage() {
       }
     }
 
-    console.log("selected users: ", selectedUser);
-    console.log("selected conv",  selectedConversation)
-
+    console.log("CONversation: ", selectedConversation);
+    console.log("user: ", selectedUser);
 
     return (
     <div className="mainSection">
@@ -105,8 +104,11 @@ function HomePage() {
             <ChatHeader
               groupName={groupName}
               selectedUser={selectedUser}
+              setSelectedUser={setSelectedUser}
               onlineUserIds={onlineUserIds}
               mobileView={mobileView}
+              setSelectedConversation={setSelectedConversation}
+
             />
             <ChatView
               messages={messages}
