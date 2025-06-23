@@ -1,7 +1,8 @@
 .header {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
+    display: flex;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
 }
 
 h1 {
@@ -11,9 +12,13 @@ h1 {
 .navBar {
     display: flex;
     flex-direction: row;
-    height: fit-content;
+    height: 100%;
     align-items: center;
-    justify-content: space-evenly;
+    padding-right: 20px;
+    justify-content: right;
+    gap: 30px;
+    height: 100%;
+    width: 200px;
 }
 
 .logo {
@@ -44,3 +49,10 @@ h1 {
         box-shadow: 0 0 1px 5px rgba(228, 53, 9, 0.5);
 
   }
+
+/* @media (max-width: 640px){
+  .navBar {
+    justify-content: right;
+    gap: 30px;
+  }
+} */

@@ -117,13 +117,15 @@ function LoginPage () {
                 <label htmlFor="password">Password</label>
                 <input type="password" name="password" onChange={(e) => setPassword(e.target.value)} required/>
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
+                <div className="loginFormButtons">
                 <button type="submit">Login</button>
                 <button onClick={() => navigate('/signup')}>
                     Signup
                 </button>
-                <button onClick={handleGuestLogin}>
+                <p className="guestLink" onClick={handleGuestLogin}>
                         Continue as Guest
-                    </button>
+                    </p>
+                </div>
             </div>
         </form>
     </div>

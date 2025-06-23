@@ -75,12 +75,12 @@ function SignupPage () {
                 {errorMessage}
               </div>
             )}
+            <div className="signupPageButtons">
                 <button type="submit">Sign Up</button>
-            </div>
-            <div className="homePageButton">
                 <button onClick={() => navigate('/')}>
                     Back
                 </button>
+            </div>
             </div>
         </form>
     </div>

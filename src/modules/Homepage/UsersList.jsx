@@ -95,18 +95,18 @@ function UsersList({setSelectedUser, onlineUserIds, mobileView, handleCreateGrou
                 </div>
                 </> ) : (
                   <>
-                  <p>Group selection here</p>
-                  <div>
-        <label htmlFor="groupName">Group Name:</label>
-        <input
-          type="text"
-          id="groupName"
-          value={groupNameInput}
-          onChange={(e) => setGroupNameInput(e.target.value)}
-          required
-        />
-      </div>
-                  <div>
+                  <p>Create Group</p>
+                  <div className="groupNameSection">
+                    <label htmlFor="groupName">Group Name</label>
+                    <input
+                    type="text"
+                    id="groupName"
+                    value={groupNameInput}
+                    onChange={(e) => setGroupNameInput(e.target.value)}
+                    required
+                    />
+                  </div>
+                  <div className="guestAddList">
                     {users.slice().sort((a, b) => {
                       const aOnline = onlineUserIds.has(a.id);
                       const bOnline = onlineUserIds.has(b.id);
@@ -121,7 +121,7 @@ function UsersList({setSelectedUser, onlineUserIds, mobileView, handleCreateGrou
                       }}
                       >
                         <p>
-                          {user.id} {user.username}{" "}
+                          {user.username}{" "}
                           <span style={{ color: onlineUserIds.has(user.id) ? "green" : "gray" }}>
                             ● {onlineUserIds.has(user.id) ? "Online" : "Offline"}
                           </span>
@@ -129,19 +129,19 @@ function UsersList({setSelectedUser, onlineUserIds, mobileView, handleCreateGrou
                       </div>
                     ))}
                   </div>
-                
-                <div className="closeGroupCreateButton">
-                    <button onClick={() => { 
+
+                  <div className="groupButtons">
+                    <div className="closeGroupCreateButton">
+                      <button onClick={() => {
                         handleCreateGroup(selectedUsers, groupNameInput);
                         mobileView();
                         groupSectionClose();
-                      }}>Create</button>
-                </div>
-                <div className="closeGroupCreateButton">
-                  <button onClick={groupSectionClose}>Cancel</button>
+                        }}>Create</button>
+                    </div>
+                    <div className="closeGroupCreateButton">
+                        <button onClick={groupSectionClose}>Cancel</button>
+                    </div>
                   </div>
-
-
                 </>
               )}
               </div> 

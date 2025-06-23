@@ -63,6 +63,9 @@ function HomePage() {
       }
     }
 
+    console.log("selected users: ", selectedUser);
+    console.log("selected conv",  selectedConversation)
+
 
     return (
     <div className="mainSection">
@@ -97,7 +100,7 @@ function HomePage() {
         )}
       </div>
       <div className={`messageView ${messageView ? 'viewOn' : ''}`}>
-        {selectedUser || selectedConversation ? (
+        {(selectedUser?.length > 0 || selectedConversation) ? (
           <>
             <ChatHeader
               groupName={groupName}

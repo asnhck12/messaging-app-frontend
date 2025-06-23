@@ -55,7 +55,7 @@ const {
                 <label htmlFor="surname">Surname</label>
                 <input type="text" name="surname" value={surName} onChange={(e) => setSurName(e.target.value)} required/>
                 <label htmlFor="summary">About Me</label>
-                <input type="text" name="summary" value={summary} onChange={(e) => setSummary(e.target.value)} required/>
+                <textarea name="summary" value={summary} onChange={(e) => setSummary(e.target.value)} required/>
                 <button type="submit">Update</button>
             </form>
         </div>

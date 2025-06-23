@@ -10,22 +10,22 @@ const ChatHeader = ({ groupName, selectedUser, onlineUserIds, mobileView }) => {
           <img src={backIcon} onClick={mobileView} />
         </div>
     <div className="messageTitle">
-      {groupName && <h3>{groupName}</h3>}
-
-      {selectedUser.map((user, index) => (
-        <span key={user.id}>
-            {user.isDeleted ? (
-                <span>Deleted User</span>
-            ) : (
-            <Link to={`/profile/${user.id}`}>{user.username}</Link>
-            )}
-            <span style={{ color: onlineUserIds.has(user.id) ? "green" : "gray" }}>
-                ● {onlineUserIds.has(user.id) ? "Online" : "Offline"}
-            </span>
-            {index < selectedUser.length - 1 && ", "}
-            </span>
-        ))}
-    </div>
+  {groupName && <h3>{groupName}</h3>}
+  <div className="messageUserList">
+  {selectedUser.map((user, index) => (
+    <span key={user.id} style={{ marginRight: '10px' }}>
+      {user.isDeleted ? (
+        "Deleted User"
+      ) : (
+        <Link to={`/profile/${user.id}`}>{user.username}</Link>
+      )}
+      <span style={{ color: onlineUserIds.has(user.id) ? "green" : "gray", marginLeft: '5px' }}>
+        ● {onlineUserIds.has(user.id) ? "Online" : "Offline"}
+      </span>
+      {index < selectedUser.length - 1 && <span> </span>}
+    </span>
+  ))}</div>
+</div>
     </div>
     </>
   );

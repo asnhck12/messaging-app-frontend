@@ -4,15 +4,31 @@
     flex:auto;
   }
 
-  .loginForm {
-    display: flex; 
-    flex-direction: column;
-  }
+.loginFormButtons {
+  display: flex;
+  flex-direction: column;
+}
 
-  .loginForm button {
-    margin-top: 20px;
-    border: 1px black solid;
-  }
+.loginFormButtons {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginForm {
+  display: flex; 
+  flex-direction: column;
+}
+
+.loginForm p {
+  padding-top: 20px;
+  font-size: larger;
+  text-decoration: underline;
+}
+
+.loginForm button {
+  margin-top: 20px;
+  /* border: 1px black solid; */
+}
 
   .error-message {
     color: red;

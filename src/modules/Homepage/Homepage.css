@@ -4,19 +4,6 @@ md	@media (min-width: 768px)	≥ 768px
 lg	@media (min-width: 1024px)	≥ 1024px
 xl	@media (min-width: 1280px)	≥ 1280px */
 
-/* * {
-  outline: 1px solid red;
-} */
-
-/* html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-} */
-
 p {
     font-size: x-large;
 }
@@ -55,6 +42,11 @@ body > .mainSection {
     padding: 5px;
     background-color: #e6e6e9;
 }
+.groupNameSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .conversations, .users, .participantName {
     width: 100%;
@@ -64,7 +56,12 @@ body > .mainSection {
     background-color: white;
 }
 
-.usersList, .conversationsList {
+#groupName {
+    text-align: center;
+    width: 180px;
+}
+
+.usersList, .conversationsList, .guestAddList {
     display: flex;
     flex-flow: column;
     flex: 1;
@@ -221,14 +218,46 @@ body > .mainSection {
     height: 50px;
 }
 
+.mainUpdateSection form {
+    display: flex;
+    flex-direction: column;
+}
+
+.mainUpdateSection form textarea{
+    width: 200px;
+    height: 75px;
+}
+
 .sidePanelViewButton, .messagePanelViewButton {
     display: none;
 
 }
 
+.groupButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+    margin: 3px;
+}
+
+.signupForm, .loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .messagePanelViewButton img {
     height: 20px;
+}
 
+.messageUserList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    max-height: 70px;
+    overflow-y: auto;
 }
 
 .messageSection {
@@ -242,8 +271,8 @@ body > .mainSection {
     margin-bottom: 5px;
 }
 
-.usersList, .conversationsList {
- 
+.messageSubmission  form button{
+    outline: none;
 }
 
 .groupCreateButton {
@@ -272,8 +301,12 @@ body > .mainSection {
         display: none;
     }
 
-    .usersList, .users, .conversationsList, .messageView {
+    .usersList, .users, .conversationsList, .messageView, .guestAddList {
         width: 100%;
     }
+
+    #groupName {
+    width: 75%;
+}
 
 }
