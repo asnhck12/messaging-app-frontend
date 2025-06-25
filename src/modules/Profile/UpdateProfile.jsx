@@ -1,3 +1,4 @@
+import { useNavigate, useOutletContext } from "react-router-dom";
 import useConversation from "../../hooks/useConversation";
 import { fetchWithAuth } from "../../utils/api";
 import './UpdateProfile.css';
@@ -13,6 +14,9 @@ const {
     summary, 
     setSummary
   } = useConversation();
+
+    const {setCompletedProfile, isGuest } = useOutletContext();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -37,9 +41,8 @@ const {
             throw new Error('Failed to update profile');
         }
 
-        const result = await response.json();
-        console.log('Updated successfully:', result);
-
+        setCompletedProfile(true);
+        navigate('/');
 }
         catch (error) {
             console.log('Error submitting updates: ', error);
@@ -47,7 +50,12 @@ const {
 };
 
     return(
-        <>
+        <> 
+        {isGuest ? (
+            <div className="guestProfile">
+                <p>Sign up for an account to create a Profile</p>
+            </div>
+        ) : (
         <div className="mainUpdateSection">
             <form method="post" onSubmit={handleSubmit}>
                 <label htmlFor="firstname">First Name</label>
@@ -58,7 +66,7 @@ const {
                 <textarea name="summary" value={summary} onChange={(e) => setSummary(e.target.value)} required/>
                 <button type="submit">Update</button>
             </form>
-        </div>
+        </div> )}
         
         </>
     )

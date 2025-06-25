@@ -16,6 +16,8 @@ function App() {
 
   const [loggedIn, setLoggedIn] = useState(isAuthenticated());
   const [completedProfile, setCompletedProfile] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
+
 
   useEffect(() => {
   const authenticateUsers = async () => {
@@ -26,14 +28,17 @@ function App() {
         const data = await res.json();
 
         const profileIsComplete = !!data.firstName && !!data.surName;
+        const guestProfile = data.isGuest;
         setCompletedProfile(profileIsComplete);
+        setIsGuest(guestProfile);
       } catch (error) {
         console.error("Error checking profile:", error);
         setCompletedProfile(false);
       }
     } else {
       setLoggedIn(false);
-      setCompletedProfile(false); // ensure both are false when not authenticated
+      setCompletedProfile(false);
+      setIsGuest(false);
     }
   };
 
@@ -43,8 +48,8 @@ function App() {
   return (
     <>
     <div className='fullDisplay'>
-      <Header setLoggedIn={setLoggedIn}  completedProfile= {completedProfile} />
-      <Outlet context={{loggedInStatus: loggedIn, setLoggedInStatus: setLoggedIn, setCompletedProfile: setCompletedProfile}}/>
+      <Header setLoggedIn={setLoggedIn}  completedProfile= {completedProfile} isGuest={isGuest} />
+      <Outlet context={{loggedInStatus: loggedIn, setLoggedInStatus: setLoggedIn, setCompletedProfile: setCompletedProfile, setIsGuest: setIsGuest,isGuest: isGuest}}/>
       <Footer/>
       </div>
     </>

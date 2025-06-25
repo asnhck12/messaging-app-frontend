@@ -43,9 +43,6 @@ function SignupPage () {
         return;
       }
 
-            const result = await response.json();
-            console.log('Sign up submitted successfully:', result);
-
             setUsername('');
             setPassword('');
             setConfirmPassword('');

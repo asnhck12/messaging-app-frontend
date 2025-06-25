@@ -1,7 +1,7 @@
 import './Homepage.css';
 import UsersList from "./UsersList";
 import { isAuthenticated } from "../../auth/auth";
-import { Link, Navigate } from "react-router-dom";
+import { Navigate, useOutletContext } from "react-router-dom";
 import ConversationsList from "./ConversationsList";
 import useConversation from "../../hooks/useConversation";
 import useSocketListeners from "../../hooks/useSockets";
@@ -45,6 +45,9 @@ function HomePage() {
     setMessageView,
     fetchConversation
   } = useConversation();
+  
+  const { isGuest } = useOutletContext();
+
 
     useSocketListeners({ conversationId, setMessages, setIsTyping, setOnlineUserIds, fetchMyConversations });
 
@@ -63,9 +66,6 @@ function HomePage() {
       }
     }
 
-    console.log("CONversation: ", selectedConversation);
-    console.log("user: ", selectedUser);
-
     return (
     <div className="mainSection">
       <div className={`sidePanel ${messageView ? '' : 'viewOn'}`}>
@@ -73,6 +73,8 @@ function HomePage() {
           <img onClick={contactsList} src={contactView ? chatIcon : addressBookIcon} />
         </div>
         {contactView ? (
+          <>
+          <h2 className="listHeading">Users</h2>
           <UsersList
             setSelectedUser={setSelectedUser}
             setGroupName={setGroupName}
@@ -86,7 +88,10 @@ function HomePage() {
             setMessages={setMessages}
             setConversationId={setConversationId}
           />
+          </>
         ) : (
+          <>
+          <h2 className="listHeading">Chats</h2>
           <ConversationsList
             setSelectedConversation={setSelectedConversation}
             setSelectedUser={setSelectedUser}
@@ -96,6 +101,7 @@ function HomePage() {
             mobileView={mobileView}
             myConversations={myConversations}
           />
+          </>
         )}
       </div>
       <div className={`messageView ${messageView ? 'viewOn' : ''}`}>
@@ -108,6 +114,7 @@ function HomePage() {
               onlineUserIds={onlineUserIds}
               mobileView={mobileView}
               setSelectedConversation={setSelectedConversation}
+              isGuest={isGuest}
 
             />
             <ChatView

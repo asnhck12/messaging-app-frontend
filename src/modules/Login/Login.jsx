@@ -3,7 +3,6 @@ import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import socket from "../../utils/socket";
 import { fetchWithAuth } from "../../utils/api";
-// import useConversation from "../../hooks/useConversation";
 import { useOutletContext } from 'react-router-dom';
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -11,9 +10,7 @@ function LoginPage () {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const { setCompletedProfile } = useOutletContext();
-    // const {profileComplete
-    // } = useConversation();
+    const { setCompletedProfile, setIsGuest} = useOutletContext();
 
     const navigate = useNavigate();
 
@@ -45,7 +42,8 @@ function LoginPage () {
 }
 
             const result = await response.json();
-
+            setIsGuest(false);
+            
             localStorage.setItem('token', result.token);
 
             socket.auth = { token: result.token };
@@ -64,7 +62,7 @@ function LoginPage () {
 
                 const first = profile.firstName || "";
                 const last = profile.surName || "";
-                
+
                 if (!first || !last) {
                     navigate("/update");
                     setCompletedProfile(false);
@@ -91,6 +89,7 @@ function LoginPage () {
             });
 
             const result = await response.json();
+            setIsGuest(result.user.isGuest);
 
             if (!response.ok) {
                 setErrorMessage(result.message || 'Failed to login as guest');

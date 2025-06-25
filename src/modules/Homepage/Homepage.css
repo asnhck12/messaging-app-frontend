@@ -5,7 +5,7 @@ lg	@media (min-width: 1024px)	≥ 1024px
 xl	@media (min-width: 1280px)	≥ 1280px */
 
 p {
-    font-size: x-large;
+    font-size: large;
 }
 
 body > .mainSection {
@@ -40,7 +40,7 @@ body > .mainSection {
     flex: 1;
     overflow: hidden;
     padding: 5px;
-    background-color: #e6e6e9;
+    background-color: black;
 }
 .groupNameSection {
     display: flex;
@@ -53,7 +53,7 @@ body > .mainSection {
 }
 
 .selectedUser {
-    background-color: white;
+    background-color: #868686;
 }
 
 #groupName {
@@ -80,9 +80,7 @@ body > .mainSection {
 }
 
 .userOnline {
-  /* box-shadow: 0 0 0 4px green; */
-    box-shadow: 0 0 3px 5px rgba(0, 128, 0, 0.5); /* green with fade */
-
+  box-shadow: 0 0 1px 6px rgb(0, 128, 0);
 }
 
 .participantName, .user {
@@ -92,6 +90,7 @@ body > .mainSection {
     gap: 15px;
     padding: 5px;
     padding-left: 10px;
+    color: white;
 }
 
 .messageTitle, .chatView {
@@ -134,16 +133,25 @@ body > .mainSection {
 
 .messageBubble p {
     margin: 0;
+    /* color: black; */
 }
 
 .sender > .messageBubble {
-    background-color: #DCF8C6;
+    background-color: black;
     align-items: flex-end;
+    color: white;
 }
 
 .recipient > .messageBubble {
     background-color: #E6F0FF;
     align-items: flex-start;
+    background-color: white;
+    outline: 1px solid black;
+    color: black;
+}
+
+.recipient > .messageBubble p {
+    color: black;
 }
 
 .messageTitle > span {
@@ -153,17 +161,26 @@ body > .mainSection {
 
 .chatUserName {
     font-weight: bolder;
-    color: darkblue;
+    /* color: darkblue; */
 }
 
 .sidePanel p {
     margin: 0;
 }
 
+.chatImgContainer {
+    display: flex;
+}
+
+.chatImgContainer img {
+    height: auto;
+    width: auto;
+}
+
 .participantDetails, .userDetails {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    gap: 10px;
     flex: 1;
     align-items: center;
 }
@@ -182,7 +199,8 @@ body > .mainSection {
     }
 
 .unreadCount {
-    background-color: greenyellow;
+    background-color: white;
+    color: black;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -192,7 +210,7 @@ body > .mainSection {
 }
 
 .participantsIcon, .participantsIconUsers {
-    outline: 2px solid  black ;
+    outline: 2px solid  white;
     border-radius: 50%;
     overflow: hidden;
     align-content: center;
@@ -205,6 +223,7 @@ body > .mainSection {
 .participants {
     display: flex;
     flex-direction: row;
+    /* color: white; */
 }
 
 .chatView form {
@@ -241,12 +260,6 @@ body > .mainSection {
     margin: 3px;
 }
 
-.signupForm, .loginForm {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
 .messagePanelViewButton img {
     height: 20px;
 }
@@ -258,6 +271,10 @@ body > .mainSection {
     align-items: center;
     max-height: 70px;
     overflow-y: auto;
+}
+
+.messageUserList a {
+    color: black
 }
 
 .messageSection {
@@ -282,7 +299,32 @@ body > .mainSection {
 .groupCreateButton img {
     height: 40px;
 }
-    
+
+.modalImage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modalImage img {
+    height: auto;
+    width: auto;
+    max-width: 90%;
+    max-height: 90%; 
+    border-radius: 8px;
+}
+
+.listHeading {
+    color: white;
+    margin: 0;    
+}
 
 @media (max-width: 640px){
     .sidePanelViewButton, .messagePanelViewButton {

@@ -1,10 +1,11 @@
 const API_URL = import.meta.env.VITE_API_URL;
 import profileicon from "../../assets/images/profileicon.svg";
 import profilegroupicon from "../../assets/images/profilegroupicon.svg";
-
+import profilegroupglobalicon from "../../assets/images/profilegroupglobalicon.svg"
 
 function ConversationsList({setSelectedConversation, selectedConversation, setSelectedUser, onlineUserIds, mobileView, myConversations, setGroupName}) {
         
+
  return (
   <div className="conversationsList">
     <div className="conversations">
@@ -12,6 +13,8 @@ function ConversationsList({setSelectedConversation, selectedConversation, setSe
         myConversations
           .slice()
           .sort((a, b) => {
+            if (a.name === "Global Chat") return -1;
+            if (b.name === "Global Chat") return 1;
             const aLast = a.messages?.[0]?.createdAt ?? a.createdAt;
             const bLast = b.messages?.[0]?.createdAt ?? b.createdAt;
             return new Date(bLast) - new Date(aLast);
@@ -36,7 +39,7 @@ function ConversationsList({setSelectedConversation, selectedConversation, setSe
                 <div className="participants">
                   <div className="participantName">
                     <div className="participantsIconUsers">
-                        <img src={profilegroupicon} />
+                        <img src={conversation.name === "Global Chat" ? (profilegroupglobalicon) : (profilegroupicon)} />
                       </div>
                       <div
                         className="participantDetails"

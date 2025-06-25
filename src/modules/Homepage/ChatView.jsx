@@ -1,4 +1,4 @@
-import React, { useEffect, useRef }  from "react";
+import React, { useEffect, useRef, useState }  from "react";
 const API_URL = import.meta.env.VITE_API_URL;
 import sendIcon from "../../assets/images/sendicon.svg";
 import attachIcon from "../../assets/images/attachicon.svg";
@@ -19,6 +19,7 @@ const ChatView = ({
   fetchMyConversations
 }) => {
   const bottomRef = useRef(null);
+  const [modalImageUrl, setModalImageUrl] = useState(null);
 
   useEffect(() => {
     if (bottomRef.current) {
@@ -47,12 +48,15 @@ const ChatView = ({
             {message.content}
           </p>
           {message.imageUrl && (
-      <img
-        src={`${API_URL}${message.imageUrl}`}
-        alt="sent media"
-        style={{ maxWidth: "200px", borderRadius: "8px", marginTop: "4px" }}
-      />
-      )}
+            <div className="chatImgContainer">
+              <img
+              src={`${API_URL}${message.imageUrl}`}
+              alt="sent media"
+              style={{ maxWidth: "200px", borderRadius: "8px", marginTop: "4px", cursor: "pointer" }}
+              onClick={() => setModalImageUrl(`${API_URL}${message.imageUrl}`)}
+              />
+            </div>
+          )}
       </div>
       </div>
       ))}
@@ -102,8 +106,21 @@ const ChatView = ({
 </button>
 </form>
 </div>
+{modalImageUrl && (
+  <div className="modalImage"
+    onClick={() => setModalImageUrl(null)}
+  >
+    <img
+      src={modalImageUrl}
+      alt="enlarged"
+      onClick={(e) => e.stopPropagation()}
+    />
+  </div>
+)}
     </div>
-  );
+  
+);
+  
 };
 
 export default ChatView;

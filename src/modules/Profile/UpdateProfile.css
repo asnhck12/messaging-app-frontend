@@ -4,3 +4,15 @@
     justify-content: center;
     padding-top: 50px;
 }
+
+.guestProfile {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+}
+
+.guestProfile p {
+    font-size: larger;
+    padding: 10px;
+    color: black;
+}
