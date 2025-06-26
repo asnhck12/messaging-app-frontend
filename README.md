@@ -1,3 +1,5 @@
-# Messaging App Backend
+# Messaging App
 
-Messaging App Backend Work In Progress
+A Messaging App, with features to send messaeges to other individuals, groups and a Global chat all users have access to.
+
+This was built with a PreSQL, Express, React and Node stack.
