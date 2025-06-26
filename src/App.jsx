@@ -7,16 +7,17 @@ import { isAuthenticated } from './auth/auth.js'
 import { useEffect } from 'react'
 import { fetchWithAuth } from './utils/api.js'
 const API_URL = import.meta.env.VITE_API_URL;
-import '@fontsource/fredoka'; // 400 by default
-import '@fontsource/fredoka/700.css'; // optional bold
-import '@fontsource/quicksand'; // 400 by default
-import '@fontsource/quicksand/600.css'; // optional semi-bold
+import '@fontsource/fredoka';
+import '@fontsource/fredoka/700.css'; 
+import '@fontsource/quicksand';
+import '@fontsource/quicksand/600.css';
 
 function App() {
 
   const [loggedIn, setLoggedIn] = useState(isAuthenticated());
   const [completedProfile, setCompletedProfile] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
+  const [username, setUsername] = useState(null);
 
 
   useEffect(() => {
@@ -29,8 +30,10 @@ function App() {
 
         const profileIsComplete = !!data.firstName && !!data.surName;
         const guestProfile = data.isGuest;
+        const profileUsername = data.username;
         setCompletedProfile(profileIsComplete);
         setIsGuest(guestProfile);
+        setUsername(profileUsername);
       } catch (error) {
         console.error("Error checking profile:", error);
         setCompletedProfile(false);
@@ -48,7 +51,7 @@ function App() {
   return (
     <>
     <div className='fullDisplay'>
-      <Header setLoggedIn={setLoggedIn}  completedProfile= {completedProfile} isGuest={isGuest} />
+      <Header setLoggedIn={setLoggedIn}  completedProfile= {completedProfile} isGuest={isGuest} username={username} />
       <Outlet context={{loggedInStatus: loggedIn, setLoggedInStatus: setLoggedIn, setCompletedProfile: setCompletedProfile, setIsGuest: setIsGuest,isGuest: isGuest}}/>
       <Footer/>
       </div>

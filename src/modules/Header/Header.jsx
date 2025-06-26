@@ -8,7 +8,7 @@ import profileicon from "../../assets/images/profileicon.svg";
 import socket from '../../utils/socket';
 const API_URL = import.meta.env.VITE_API_URL;
 
-function Header ({setLoggedIn, completedProfile , isGuest}) {
+function Header ({setLoggedIn, completedProfile , isGuest, username}) {
 
     const navigate = useNavigate();
 
@@ -52,6 +52,9 @@ function Header ({setLoggedIn, completedProfile , isGuest}) {
         <div className="navBar">
             {isLoggedIn ? (
                 <>
+                <div className='headerUsername'>
+                    <p>{username}</p>
+                </div>
                 <div className={`updateProfile ${isGuest ? "guestUser" : !completedProfile ? "profileIncomplete" : "" }`}>
                     <Link to='update'>
                     <img src={profileicon} />

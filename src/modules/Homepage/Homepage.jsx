@@ -41,6 +41,7 @@ function HomePage() {
     fetchMyConversations,
     markConversationAsRead,
     handleCreateGroup,
+    createGroupError,
     messageView,
     setMessageView,
     fetchConversation
@@ -87,6 +88,7 @@ function HomePage() {
             setSelectedConversation={setSelectedConversation}
             setMessages={setMessages}
             setConversationId={setConversationId}
+            createGroupError={createGroupError}
           />
           </>
         ) : (

@@ -21,6 +21,8 @@ const useConversation = () => {
   const [surName, setSurName] = useState("");
   const [summary, setSummary] = useState("");
   const [profileComplete, setProfileComplete] = useState(false);
+  const [createGroupError, setCreateGroupError] = useState("");
+
   
   useEffect(() => {
       const fetchMyProfile = async () => {
@@ -50,6 +52,10 @@ const useConversation = () => {
       connectSocket();
     }
   }, []);
+
+  useEffect(() => {
+    setCreateGroupError("");
+  }, [selectedUser, groupName]);
 
   useEffect(() => {
     if (selectedConversation) {
@@ -150,16 +156,33 @@ const useConversation = () => {
       console.error("Error fetching messages", error);
     }
   };
-
+  
+  
   const handleCreateGroup = (users, name) => {
-  if (users.length > 1 && name) {
+      const uniqueUsers = Array.from(new Set(users.map(u => u.id ?? u))).filter(Boolean);
+    const trimmedName = name?.trim();
+
+    if (uniqueUsers.length < 2 && !trimmedName) {
+      setCreateGroupError("Please select at least 2 group members and enter a valid group name.");
+      return false;
+    }
+
+    if (uniqueUsers.length < 2) {
+      setCreateGroupError("Please select at least 2 unique group members.");
+      return false;
+    }
+
+    if (!trimmedName) {
+      setCreateGroupError("Please enter a valid group name.");
+      return false;
+    }
+
+    setCreateGroupError("");
     setSelectedUser(users);
-    setGroupName(name);
-    fetchConversation({ selectedUser: users, groupName: name });
-  } else {
-    alert("Please select at least 2 members and enter a group name.");
-  }
-};
+    setGroupName(trimmedName);
+    fetchConversation({ selectedUser: users, groupName: trimmedName });
+    return true;
+  };
 
 
   const handleSubmit = async (e) => {
@@ -245,6 +268,7 @@ const useConversation = () => {
     myConversations,
     markConversationAsRead,
     handleCreateGroup,
+    createGroupError,
     setMessageView,
     messageView,
     fetchConversation,

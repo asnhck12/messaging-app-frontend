@@ -5,11 +5,12 @@ import profileicon from "../../assets/images/profileicon.svg";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-function UsersList({setSelectedUser, onlineUserIds, mobileView, handleCreateGroup, fetchConversation, setSelectedConversation, setMessages, setConversationId }) {
+function UsersList({setSelectedUser, onlineUserIds, mobileView, handleCreateGroup, fetchConversation, setSelectedConversation, setMessages, setConversationId, createGroupError }) {
   const [users, setUsers] = useState([]);
   const [createGroup, setCreateGroup] = useState(null);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [groupNameInput, setGroupNameInput] = useState("");
+  
 
   const groupSectionOpen = () => {
           setCreateGroup(true)
@@ -95,16 +96,23 @@ function UsersList({setSelectedUser, onlineUserIds, mobileView, handleCreateGrou
                 </div>
                 </> ) : (
                   <>
-                  <p>Create Group</p>
-                  <div className="groupNameSection">
-                    <label htmlFor="groupName">Group Name</label>
-                    <input
-                    type="text"
-                    id="groupName"
-                    value={groupNameInput}
-                    onChange={(e) => setGroupNameInput(e.target.value)}
-                    required
-                    />
+                  <div className="createGroupSection">
+                    <div className="createGroupHeader">
+                      <p>Create Group</p>
+                    </div>
+                    <div className="groupNameSection">
+                      <label htmlFor="groupName">Group Name</label>
+                      <input
+                      type="text"
+                      id="groupName"
+                      value={groupNameInput}
+                      onChange={(e) => setGroupNameInput(e.target.value)}
+                      required
+                      />
+                    </div>
+                    <div className="errorMessageContainer">
+                      {createGroupError && <p className="error-message">{createGroupError}</p>}
+                    </div>
                   </div>
                   <div className="guestAddList">
                     {users.slice().sort((a, b) => {
@@ -116,16 +124,15 @@ function UsersList({setSelectedUser, onlineUserIds, mobileView, handleCreateGrou
                       key={user.id}
                       className={`userSection ${isUserSelected(user.id) ? "selected" : ""}`}
                       onClick={() => toggleUserSelection(user)}
-                      style={{
-                        backgroundColor: isUserSelected(user.id) ? "#e0f7fa" : "transparent"
-                      }}
                       >
-                        <p>
-                          {user.username}{" "}
-                          <span style={{ color: onlineUserIds.has(user.id) ? "green" : "gray" }}>
-                            ● {onlineUserIds.has(user.id) ? "Online" : "Offline"}
-                          </span>
-                          </p>
+                        <div className="user">
+                          <div className={`participantsIconUsers ${onlineUserIds.has(user.id) ? "userOnline" : "userOffline"}`}>
+                            <img src={profileicon}/>
+                          </div>
+                          <div className="userDetails">
+                            <p>{user.username}</p>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -133,9 +140,11 @@ function UsersList({setSelectedUser, onlineUserIds, mobileView, handleCreateGrou
                   <div className="groupButtons">
                     <div className="closeGroupCreateButton">
                       <button onClick={() => {
-                        handleCreateGroup(selectedUsers, groupNameInput);
-                        mobileView();
-                        groupSectionClose();
+                        const success = handleCreateGroup(selectedUsers, groupNameInput);
+                          if (success) {
+                            mobileView();
+                            groupSectionClose();
+                          }
                         }}>Create</button>
                     </div>
                     <div className="closeGroupCreateButton">
