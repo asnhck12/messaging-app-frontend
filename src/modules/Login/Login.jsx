@@ -123,7 +123,7 @@ function LoginPage () {
                 </button>
                 <p className="guestLink" onClick={handleGuestLogin}>
                         Continue as Guest
-                    </p>
+                </p>
                 </div>
             </div>
         </form>

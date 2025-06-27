@@ -23,19 +23,17 @@
     box-shadow: 0 0 40px 10px gray;
 }
 
-/* .loginForm p {
-  padding-top: 20px;
-  font-size: large;
-  text-decoration: underline;
-  color: black;
-} */
-
 .loginForm button {
   margin-top: 20px;
-  /* border: 1px black solid; */
 }
 
   .error-message {
     color: red;
     margin-bottom: 10px;
+}
+
+.guestLink {
+  color: black;
+  cursor: pointer;
+  font-size: medium;
 }
