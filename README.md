@@ -1,7 +1,9 @@
 # Natter - A Messaging App
 
-A Messaging App where users can send messaeges to other individuals, create chat groups and a Global chat all users have access to and able to send messages in.
-There's also a 'Guest' feature, where users can log in temporarily as guests, and are able to use all the features as a one time user.
+A Messaging App where users can send messages to other users, create chat groups and access a Global chat that all users have access to and are able to send messages in.
+There is also a 'Guest' feature where users can log in temporarily as a guest without needing to create an account, and can access most of the features in the Messaging App.
+
+https://natter-messaging-app.vercel.app/
 
 The stack used for this project:
  - PostgreSQL
