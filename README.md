@@ -1,7 +1,7 @@
 # Natter - A Messaging App
 
-A Messaging App where users can send messages to other users, create chat groups and access a Global chat that all users have access to and are able to send messages in.
-There is also a 'Guest' feature where users can log in temporarily as a guest without needing to create an account, and can access most of the features in the Messaging App.
+A Messaging App where users can send messages to each other, create chat groups, complete their personal bio and access a Global chat with all users.
+There is also a 'Guest' feature where users can log in temporarily as a guest without needing to create an account and access most of the features in the Messaging App.
 
 https://natter-messaging-app.vercel.app/
 
