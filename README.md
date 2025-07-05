@@ -12,4 +12,6 @@ The stack used for this project:
  - Node JS
  - Socket.io
 
+ The backend: https://github.com/asnhck12/messaging-app-backend
+
 ![Screenshot 2025-07-05 at 00-52-20 Natter](https://github.com/user-attachments/assets/47ae57ea-92eb-4c21-8d7a-b4e0c94dab55)
